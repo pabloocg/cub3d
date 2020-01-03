@@ -6,7 +6,7 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/21 19:28:28 by pcuadrad          #+#    #+#             */
-/*   Updated: 2019/12/31 16:48:11 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/03 12:39:38 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	ft_exit(int control)
 int		exit_program(data_t *player)
 {
 	free_all(player);
-	ft_printf("Saliendo del programa..\n");
+	ft_printf("Exiting the program...\n");
 	exit(EXIT_SUCCESS);
 }
 
@@ -78,10 +78,9 @@ void		game_over(data_t *player)
 	player->textur.gameover.path = ft_strdup("textures/game_over.xpm");
 	charge_textures(player, &player->textur.gameover);
 	x = -1;
-	while (++x < player->map.width)
+	while ((++x < player->map.width) && (y = -1))
 	{
 		how_x = (x * player->textur.gameover.w) / player->map.width;
-		y = -1;
 		while (++y < player->map.screen_height)
 		{
 			how_y = (y * player->textur.gameover.h ) / player->map.screen_height;

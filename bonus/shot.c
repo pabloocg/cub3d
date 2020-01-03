@@ -6,7 +6,7 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 14:19:54 by pcuadrad          #+#    #+#             */
-/*   Updated: 2020/01/02 15:00:48 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/03 11:21:45 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,15 +131,21 @@ int         shot(data_t *player)
 
 void	play_shot(data_t *player)
 {
-    pid_t		x;
-	//static char	kill[17] = "kill -9 ";
- 
-	x = fork();	
+	pid_t		x;
+
+	x = fork();
 	if (x < 0)
 	{
 		ft_printf("fork failure\n");
 		exit_program(player);
 	}   
 	else if (x == 0)
+	{
 		execlp("mpg123", "mpg123", "-q", "sounds/shot.mp3", 0);
+		if(execlp("mpg123", "mpg123", "-q", "sounds/shot.mp3", 0) == -1)
+		{
+			ft_printf("Command Not Found\n");
+			exit_program(player);
+		}
+	}
 }

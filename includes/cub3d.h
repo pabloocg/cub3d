@@ -6,7 +6,7 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/01 17:22:36 by pablo             #+#    #+#             */
-/*   Updated: 2019/12/26 18:36:58 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/03 12:26:56 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,8 +198,7 @@ For Linux:
 # define KEY_ARROW_DOWN 125
 # define SCREENSHOT_PATH "screenshot.bmp"
 # define BYTES_PER_PIXEL 4
-# define FILE_HEADER_SIZE 16
-# define INFO_HEADER_SIZE 36
+# define INFO_HEADER_SIZE 54
 
 int		init_render(data_t *player);
 void	bmp_check(data_t *player, char *argv[]);

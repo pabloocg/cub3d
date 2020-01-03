@@ -6,7 +6,7 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/25 17:54:46 by pcuadrad          #+#    #+#             */
-/*   Updated: 2019/12/27 12:03:28 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/03 11:59:40 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int			main(int argc, char *argv[])
     data_t  *player;
 	int		num_sprites;
 
-	if ((argc < 2 || argc > 3) || (!ft_strcmp(argv[1], "-save")))
+	if ((argc < 2 || argc > 3) || (!ft_strcmp(argv[1], "--save")))
 		ft_exit(3);
 	if ((num_sprites = isvalid(argv)) == -1)
 		ft_exit(5);
