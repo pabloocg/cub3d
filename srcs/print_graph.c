@@ -6,7 +6,7 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/03 20:15:21 by pablo             #+#    #+#             */
-/*   Updated: 2020/01/09 14:27:39 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/09 18:25:59 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,14 @@ void		print_sprite(t_data *player)
 		< player->depth[(int)stripe])
 			print_sprite__aux(player, texx, stripe);
 	}
+}
+
+int		get_color_bmp(unsigned char *image, int x, int y, t_data *player)
+{
+	int	rgb;
+	int	color;
+
+	color = *(int*)(image + (4 * player->map.width * (player->map.height - 1 - y)) + (4 * x));
+	rgb = (color & 0xFF0000) | (color & 0x00FF00) | (color & 0x0000FF);
+	return (rgb);
 }

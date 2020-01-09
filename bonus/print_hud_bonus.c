@@ -6,7 +6,7 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/27 11:36:01 by pcuadrad          #+#    #+#             */
-/*   Updated: 2019/12/30 14:30:38 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/09 18:51:14 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	get_pixel(text_t *image, double y, double x)
 	return ((int)image->image[(int)pos]);
 }
 
-void		print_hud(data_t *player)
+void		print_hud(t_data *player)
 {
 	int		y;
 	int		x;
@@ -99,7 +99,7 @@ void		print_hud(data_t *player)
 	}
 }
 
-void			print_crosshair(data_t *player)
+void			print_crosshair(t_data *player)
 {
 	int		x;
 	int		y;
@@ -118,7 +118,7 @@ void			print_crosshair(data_t *player)
 	}
 }
 
-void			print_gun(data_t *player)
+void			print_gun(t_data *player)
 {
 	int		x_bgin;
 	int		x_end;

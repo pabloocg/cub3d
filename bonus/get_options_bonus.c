@@ -6,13 +6,13 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/26 12:44:05 by pcuadrad          #+#    #+#             */
-/*   Updated: 2019/12/30 18:57:56 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/09 18:50:37 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-void	get_textures(data_t *player, char *line)
+void	get_textures(t_data *player, char *line)
 {
 	if (ft_strstr((const char*)line, "NO"))
 	{
@@ -40,7 +40,7 @@ void	get_textures(data_t *player, char *line)
 	}
 }
 
-void	get_colors(char *line, data_t *player, char param)
+void	get_colors(char *line, t_data *player, char param)
 {
 	if (param == 'F')
 	{
@@ -56,7 +56,7 @@ void	get_colors(char *line, data_t *player, char param)
 	}
 }
 
-void	get_sprite(data_t *player, char *line, char letter)
+void	get_sprite(t_data *player, char *line, char letter)
 {
 	if (letter == 'S')
 	{
@@ -84,7 +84,7 @@ void	get_sprite(data_t *player, char *line, char letter)
 	}
 }
 
-void	get_resolution(data_t *player, char *line)
+void	get_resolution(t_data *player, char *line)
 {
 	while (*line == ' ' || *line == 'R')
 		line++;
@@ -102,7 +102,7 @@ void	get_resolution(data_t *player, char *line)
 		(player->map.screen_height / 4);
 }
 
-int		get_map_numbers(int fd_open, data_t *player)
+int		get_map_numbers(int fd_open, t_data *player)
 {
 	char	*line;
 	int		x;

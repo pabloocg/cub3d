@@ -6,13 +6,13 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/26 12:48:44 by pcuadrad          #+#    #+#             */
-/*   Updated: 2020/01/09 11:00:46 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/09 18:50:08 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-text_t	get_texture(data_t *player)
+text_t	get_texture(t_data *player)
 {
 	if (player->map.tab_map[player->ray.mapX][player->ray.mapY] == 1 &&
 		player->ray.side && player->ray.stepY >= 0)
@@ -30,7 +30,7 @@ text_t	get_texture(data_t *player)
 		return (player->textur.sprite[0]);
 }
 
-int			charge_textures(data_t *player, text_t *texture)
+int			charge_textures(t_data *player, text_t *texture)
 {
 	if (texture->path)
 		if (!(texture->id = mlx_xpm_file_to_image(player->mlx_ptr, texture->path, &texture->w, &texture->h)))
@@ -41,7 +41,7 @@ int			charge_textures(data_t *player, text_t *texture)
 	return (1);
 }
 
-void		charge_textures_main(data_t *player)
+void		charge_textures_main(t_data *player)
 {
 	if (!(charge_textures(player, &player->textur.north_text)))
 		ft_exit(4);

@@ -6,13 +6,13 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/25 17:54:46 by pcuadrad          #+#    #+#             */
-/*   Updated: 2020/01/09 10:54:10 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/09 20:00:29 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-int			init_render(data_t *player)
+int			init_render(t_data *player)
 {
 	if (!(player->mlx_win = mlx_new_window(player->mlx_ptr, player->map.width,
 		player->map.screen_height, "CUB3D")))
@@ -32,7 +32,7 @@ int			init_render(data_t *player)
 
 void		init_game(int argc, char *argv[], int lifes)
 {
-	data_t  *player;
+	t_data  *player;
 	int		num_sprites;
 
 	if ((num_sprites = isvalid(argv)) == -1)
@@ -50,8 +50,8 @@ void		init_game(int argc, char *argv[], int lifes)
 
 int			main(int argc, char *argv[])
 {
-	if ((argc < 2 || argc > 3) || (!ft_strcmp(argv[1], "-save")))
+	if ((argc < 2 || argc > 3) || (!ft_strcmp(argv[1], "--save")))
 		ft_exit(3);
-	init_game(argc, argv, 3);
+	init_game(argc, argv, 6);
     return (EXIT_SUCCESS);
 }

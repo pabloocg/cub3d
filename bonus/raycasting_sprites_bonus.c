@@ -6,7 +6,7 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/21 17:58:48 by pcuadrad          #+#    #+#             */
-/*   Updated: 2020/01/09 11:11:32 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/09 19:56:36 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	sort_sprites(int *order_sprite, double *distance_sprite, int num_spr
 		}
 }
 
-int			get_distance_sprites(data_t *player)
+int			get_distance_sprites(t_data *player)
 {
 	int	i;
 
@@ -52,7 +52,7 @@ int			get_distance_sprites(data_t *player)
 	return (1);
 }
 
-static void	get_draw(data_t *player)
+static void	get_draw(t_data *player)
 {
 	player->ray_sprite.spriteHeight = abs((int)(player->map.height / (player->ray_sprite.transformY))) / vDiv;
 	player->ray_sprite.drawStartY = -player->ray_sprite.spriteHeight / 2 + player->map.height / 2 + player->ray_sprite.vMoveScreen;
@@ -66,7 +66,7 @@ static void	get_draw(data_t *player)
 	player->ray_sprite.drawEndX = (player->ray_sprite.drawEndX >= player->map.width) ? player->map.width - 1 : player->ray_sprite.drawEndX;
 }
 
-void		print_sprite(data_t *player, int i)
+void		print_sprite(t_data *player, int i)
 {
 	int				stripe;
 	int				texX;
@@ -85,7 +85,7 @@ void		print_sprite(data_t *player, int i)
 			{
 				player->ray_sprite.print_y = ((int)(y - player->ray_sprite.vMoveScreen) * 256.) - (player->map.height * 128.) + (player->ray_sprite.spriteHeight * 128.);
 				texY = ((player->ray_sprite.print_y * player->textur.sprite[player->sprite[player->ray_sprite.spriteOrder[i]].n_text].h) / player->ray_sprite.spriteHeight) / 256.;
-				color = player->textur.sprite[player->sprite[player->ray_sprite.spriteOrder[i]].n_text].image[(player->textur.sprite[player->sprite[player->ray_sprite.spriteOrder[i]].n_text].w * texY) + texX];
+					color = player->textur.sprite[player->sprite[player->ray_sprite.spriteOrder[i]].n_text].image[(player->textur.sprite[player->sprite[player->ray_sprite.spriteOrder[i]].n_text].w * texY) + texX];
 				if(((player->sprite[player->ray_sprite.spriteOrder[i]].n_text != 1 && color != 0) &&
 					(player->sprite[player->ray_sprite.spriteOrder[i]].n_text != 3 && color != 0)) ||
 					(player->sprite[player->ray_sprite.spriteOrder[i]].n_text == 1 && color != 9961608) ||
@@ -96,7 +96,7 @@ void		print_sprite(data_t *player, int i)
 	}
 }
 
-void		render_sprite(data_t *player)
+void		render_sprite(t_data *player)
 {
 	int		i;
 
@@ -114,7 +114,6 @@ void		render_sprite(data_t *player)
 		player->ray_sprite.spriteScreenX = (int)((player->map.width / 2) * (1 + player->ray_sprite.transformX / player->ray_sprite.transformY));
 		player->ray_sprite.vMoveScreen = (int)(vMove / player->ray_sprite.transformY);
 		get_draw(player);
-		ft_printf("Sprite: %d\n", i);
 		print_sprite(player, i);
 	}
 	free(player->ray_sprite.spriteOrder);

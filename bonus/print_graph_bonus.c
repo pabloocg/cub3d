@@ -6,7 +6,7 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/03 20:15:21 by pablo             #+#    #+#             */
-/*   Updated: 2020/01/02 14:48:00 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/09 18:51:07 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	get_pixel(text_t *image, int y, int x)
 	return ((int)image->image[(int)pos]);
 }
 
-void		print_column(data_t *player, int start, int end, int coord,
+void		print_column(t_data *player, int start, int end, int coord,
 	text_t texture)
 {
 	int		y;

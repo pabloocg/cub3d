@@ -6,13 +6,13 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 19:00:46 by pcuadrad          #+#    #+#             */
-/*   Updated: 2019/12/29 18:33:56 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/09 18:49:35 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-void		move_enemy(int side, sprite_t *sprite, data_t *player)
+void		move_enemy(int side, sprite_t *sprite, t_data *player)
 {
 	double	move_speed;
 
@@ -35,7 +35,7 @@ void		move_enemy(int side, sprite_t *sprite, data_t *player)
 	player->map.tab_map[(int)sprite->posX][(int)sprite->posY] = 3;
 }
 
-void		animate_sprite(data_t *player)
+void		animate_sprite(t_data *player)
 {
 	int     i;
 

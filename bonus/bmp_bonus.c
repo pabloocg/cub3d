@@ -6,85 +6,127 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/16 12:37:22 by pcuadrad          #+#    #+#             */
-/*   Updated: 2019/12/27 11:34:46 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/09 19:47:59 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-unsigned char	*create_bitmap_file_header(int height, int width, int padding_size)
+unsigned char*	create_bitmap_file_header(t_data *player, int paddingsiz)
 {
-	int						file_size;
-	static unsigned char	file_header[] = {
-		0, 0,
-		0, 0, 0, 0,
-		0, 0, 0, 0,
-		0, 0, 0, 0,
+    int fileSize;
+    static unsigned char fileHeader[] = {
+        0,0,
+        0,0,0,0,
+        0,0,0,0,
+        0,0,0,0,
+    };
+
+	fileSize = FILE_HEADER_SIZE + INFO_HEADER_SIZE + (BYTES_PER_PIXEL *
+	player->map.width + paddingsiz) * player->map.screen_height;
+    fileHeader[0] = (unsigned char)('B');
+    fileHeader[1] = (unsigned char)('M');
+    fileHeader[2] = (unsigned char)(fileSize);
+    fileHeader[3] = (unsigned char)(fileSize >> 8);
+    fileHeader[4] = (unsigned char)(fileSize >> 16);
+    fileHeader[5] = (unsigned char)(fileSize >> 24);
+    fileHeader[10] = (unsigned char)(FILE_HEADER_SIZE + INFO_HEADER_SIZE);
+    return (fileHeader);
+}
+
+unsigned char*	create_bitmap_info_header(t_data *player)
+{
+	static unsigned char infoHeader[] = {
+		0,0,0,0,
+		0,0,0,0,
+		0,0,0,0,
+		0,0,0,0,
+		0,0,0,0,
+		0,0,0,0,
+		0,0,0,0,
+		0,0,0,0,
+		0,0,0,0,
+		0,0,0,0,
 	};
 
-	file_size = FILE_HEADER_SIZE + INFO_HEADER_SIZE + (BYTES_PER_PIXEL * width + padding_size) * height;
-	file_header[0] = (unsigned char)('B');
-	file_header[1] = (unsigned char)('M');
-	file_header[2] = (unsigned char)(file_size);
-	file_header[3] = (unsigned char)(FILE_HEADER_SIZE + INFO_HEADER_SIZE);
-	file_header[4] = (unsigned char)(width);
-	file_header[5] = (unsigned char)(height);
-	file_header[10] = (unsigned char)(BYTES_PER_PIXEL);
-	return (file_header);
+	infoHeader[0] = (unsigned char)(INFO_HEADER_SIZE);
+	infoHeader[4] = (unsigned char)(player->map.width);
+	infoHeader[5] = (unsigned char)(player->map.width >> 8);
+	infoHeader[6] = (unsigned char)(player->map.width >> 16);
+	infoHeader[7] = (unsigned char)(player->map.width >> 24);
+	infoHeader[8] = (unsigned char)(player->map.width);
+	infoHeader[9] = (unsigned char)(player->map.screen_height >> 8);
+	infoHeader[10] = (unsigned char)(player->map.screen_height >> 16);
+	infoHeader[11] = (unsigned char)(player->map.screen_height >> 24);
+	infoHeader[12] = (unsigned char)(1);
+	infoHeader[14] = (unsigned char)(BYTES_PER_PIXEL * 8);
+	return (infoHeader);
 }
 
-void			write_rgb(data_t *player, int height, int width, int fd)
+static int		write_bmp_data(int file, unsigned char *image, t_data *player)
 {
-	int		x;
-	int		y;
+	static unsigned char	zero[3] = {
+		0, 0, 0
+	};
+	int					i;
+	int					j;
+	int					color;
+	int					paddingSize;
 
-	x = 0;
-	while (x < width)
-	{
-		y = 0;
-		while (y < height)
+	paddingSize = (4 - (player->map.width * BYTES_PER_PIXEL) % 4) % 4;
+	i = -1;
+	while ((++i < player->map.screen_height) && (j = -1))
+		while (++j < player->map.width)
 		{
-			ft_putnbr_fd(player->img.image[(y * player->map.width) + x], fd);
-			y++;
+			color = get_color_bmp(image, j, i, player);
+			write(file, &color, BYTES_PER_PIXEL);
+			if (paddingSize > 0)
+			{
+				write(file, &zero, paddingSize);
+				return (0);
+			}
 		}
-		x++;
-	}
-}
-
-void			generate_bitmap_image(data_t *player, int height, int width)
-{
-	int				fd;
-	unsigned char	*file_header;
-
-	file_header = create_bitmap_file_header(height, width, (4 - (width * BYTES_PER_PIXEL) % 4) % 4);
-	fd = open(SCREENSHOT_PATH, O_WRONLY);
-	write(fd, file_header, FILE_HEADER_SIZE);
-	write_rgb(player, height, width, fd);
-	close(fd);
-}
-
-int				create_bmp(data_t *player)
-{
-	int height;
-	int width;
-
-	height = player->map.height - 1;
-	width = player->map.width;
-	if (!(player->img.id = mlx_new_image(player->mlx_ptr, player->map.width, player->map.height)))
-		return (0);
-	player->img.image = (int*)mlx_get_data_addr(player->img.id, &player->img.data, &player->img.size_line, &player->img.endian);
-	if (!(player->depth = malloc(sizeof(int) * player->map.width)))
-		return (0);
-	render(player);
-	generate_bitmap_image(player, height, width);
-	ft_printf("Image BMP 'screenshot.bmp' create correctly.\n");
-	exit_program(player);
 	return (1);
 }
 
-void			bmp_check(data_t *player, char *argv[])
+void			generate_bitmap_image(unsigned char *image, t_data *player)
 {
-	if (!ft_strcmp(argv[2], "-save"))
+    int						paddingSize;
+    unsigned char*			fileHeader;
+    unsigned char*			infoHeader;
+	int						fd;
+
+	paddingSize = (4 - (player->map.width * BYTES_PER_PIXEL) % 4) % 4;
+	if ((fd = open(SCREENSHOT_PATH, O_WRONLY | O_CREAT, 0777)) < 0)
+		return ;
+	fileHeader = create_bitmap_file_header(player, paddingSize);
+	infoHeader = create_bitmap_info_header(player);
+	write(fd, fileHeader, FILE_HEADER_SIZE);
+	write(fd, infoHeader, INFO_HEADER_SIZE);
+	write_bmp_data(fd, image, player);
+	close(fd);
+}
+
+int				create_bmp(t_data *player)
+{
+	if (!(player->depth = (double*)malloc(sizeof(double) * player->map.width)))
+		return (0);
+	if (!(player->img.id = mlx_new_image(player->mlx_ptr, player->map.width,
+		player->map.screen_height)))
+		return (0);
+	player->img.image = (int*)mlx_get_data_addr(player->img.id,
+		&player->img.data, &player->img.size_line, &player->img.endian);
+	srand(time(0));
+	render(player);
+	generate_bitmap_image((unsigned char*)player->img.image, player);
+	ft_printf("Image BMP 'screenshot.bmp' create correctly.\n");
+	exit_program_bmp(player);
+	return (1);
+}
+
+void			bmp_check(t_data *player, char *argv[])
+{
+	if (!ft_strcmp(argv[2], "--save"))
 	{
 		if (!(create_bmp(player)))
 		{

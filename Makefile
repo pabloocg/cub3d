@@ -6,7 +6,7 @@
 #    By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/01 17:27:13 by pablo             #+#    #+#              #
-#    Updated: 2020/01/09 10:37:43 by pcuadrad         ###   ########.fr        #
+#    Updated: 2020/01/09 17:22:29 by pcuadrad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,9 @@ LIB_LIBFT = libft.a
 
 GCC = gcc -Wall -Werror -Wextra
 
-FLAGS = -L ${LIBFT_PATH} -lft -lmlx -framework OpenGL -framework Appkit
+#FLAGS = -L ${LIBFT_PATH} -lft -lmlx -framework OpenGL -framework Appkit
+
+FLAGS = -L ${LIBFT_PATH} -lft -Lminilibx -lmlx -framework OpenGL -framework Appkit
 
 CREATEMKDIR = @mkdir -p objs
 

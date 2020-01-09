@@ -12,7 +12,7 @@
 
 #include "../includes/cub3d_bonus.h"
 
-void	free_map(data_t *player)
+void	free_map(t_data *player)
 {
 	int		i;
 
@@ -27,15 +27,15 @@ void	free_map(data_t *player)
 		free(player->map.tab_map);
 }
 
-void	free_all(data_t *player)
+void	free_all(t_data *player)
 {
 	if (player)
 		free_map(player);
 	if (player->depth)
 		free(player->depth);
-	//if (player->textur.sprite)
+	if (player->textur.sprite)
 		free(player->textur.sprite);
-	//if (player->sprite)
+	if (player->sprite)
 		free(player->sprite);
 	mlx_destroy_image(player->mlx_ptr, player->img.id);
 	mlx_destroy_window(player->mlx_ptr, player->mlx_win);
@@ -43,7 +43,21 @@ void	free_all(data_t *player)
 		free(player);
 }
 
-void	free_path_textures(data_t *player, int control)
+void	free_all_bmp(t_data *player)
+{
+	if (player)
+		free_map(player);
+	if (player->depth)
+		free(player->depth);
+	if (player->textur.sprite)
+		free(player->textur.sprite);
+	if (player->sprite)
+		free(player->sprite);
+	if (player)
+		free(player);
+}
+
+void	free_path_textures(t_data *player, int control)
 {
 	if (control == 1)
 	{

@@ -6,13 +6,13 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 14:19:54 by pcuadrad          #+#    #+#             */
-/*   Updated: 2020/01/03 11:21:45 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/09 18:51:39 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-static int	control_life_enemy(data_t *player, int posX, int posY)
+static int	control_life_enemy(t_data *player, int posX, int posY)
 {
 	int		i;
 
@@ -30,7 +30,7 @@ static int	control_life_enemy(data_t *player, int posX, int posY)
 	return (0);
 }
 
-void		delete_sprite(data_t *player, int posX, int posY)
+void		delete_sprite(t_data *player, int posX, int posY)
 {
 	int			i;
 	sprite_t	temp;
@@ -49,7 +49,7 @@ void		delete_sprite(data_t *player, int posX, int posY)
 	player->num_sprites -= 1;
 }
 
-void		change_sprite(data_t *player, int posX, int posY)
+void		change_sprite(t_data *player, int posX, int posY)
 {
 	int			i;
 
@@ -59,7 +59,7 @@ void		change_sprite(data_t *player, int posX, int posY)
 			player->sprite[i].n_text = 3;
 }
 
-static void		get_hit(data_t *player)
+static void		get_hit(t_data *player)
 {
 	player->ray.hit = 0;
 	while (player->ray.hit == 0)
@@ -88,7 +88,7 @@ static void		get_hit(data_t *player)
 	}
 }
 
-static void		get_step_side(int x, data_t *player)
+static void		get_step_side(int x, t_data *player)
 {
 	player->ray.cameraX = (2 * x) / (double)player->map.width - 1;
 	player->ray.rayDirX = player->dirX + player->planeX * player->ray.cameraX;
@@ -115,7 +115,7 @@ static void		get_step_side(int x, data_t *player)
 								player->ray.deltaDistY;
 }
 
-int         shot(data_t *player)
+int         shot(t_data *player)
 {
     int     x;
 
@@ -129,7 +129,7 @@ int         shot(data_t *player)
     return (1);
 }
 
-void	play_shot(data_t *player)
+void	play_shot(t_data *player)
 {
 	pid_t		x;
 

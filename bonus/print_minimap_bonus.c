@@ -6,13 +6,13 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/26 18:24:37 by pcuadrad          #+#    #+#             */
-/*   Updated: 2019/12/30 17:08:15 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/09 18:51:20 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-static void		print_cub_mini(data_t *player, int x, int y , int size, int color)
+static void		print_cub_mini(t_data *player, int x, int y , int size, int color)
 {
 	int		w;
 	int		h;
@@ -26,7 +26,7 @@ static void		print_cub_mini(data_t *player, int x, int y , int size, int color)
 		}
 }
 
-void			print_map(data_t *player)
+void			print_map(t_data *player)
 {
 	int		x;
 	int		y;

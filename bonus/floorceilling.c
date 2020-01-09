@@ -6,7 +6,7 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 16:35:30 by pcuadrad          #+#    #+#             */
-/*   Updated: 2019/12/28 18:23:06 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/09 18:50:25 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	get_pixel(text_t *image, int y, int x)
 	return ((int)image->image[(int)pos]);
 }
 
-static void	get_floorXWall(data_t *player)
+static void	get_floorXWall(t_data *player)
 {
 	if(player->ray.side == 0 && player->ray.stepX > 0)
 	{
@@ -50,7 +50,7 @@ static void	get_floorXWall(data_t *player)
 	}
 }
 
-static void	how_xy(data_t *player, int y)
+static void	how_xy(t_data *player, int y)
 {
 	player->floorceilling.currentDist = player->map.height /
 		(2.0 * y - player->map.height);
@@ -69,7 +69,7 @@ static void	how_xy(data_t *player, int y)
 		* player->textur.floor.h) % player->textur.floor.h;
 }
 
-void        floorcasting(data_t *player, int coord)
+void        floorcasting(t_data *player, int coord)
 {
     int     y;
 

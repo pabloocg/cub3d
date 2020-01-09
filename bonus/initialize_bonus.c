@@ -6,13 +6,13 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/26 11:58:52 by pcuadrad          #+#    #+#             */
-/*   Updated: 2020/01/09 11:03:17 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/09 18:50:47 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-void	parse_map(data_t *player, char *line)
+void	parse_map(t_data *player, char *line)
 {
 	const char	*cpyline;
 
@@ -36,7 +36,7 @@ void	parse_map(data_t *player, char *line)
 		get_colors((char*)cpyline, player, 'C');
 }
 
-int			read_map(data_t *player, char *file)
+int			read_map(t_data *player, char *file)
 {
 	int		fd_open;
 
@@ -54,7 +54,7 @@ int			read_map(data_t *player, char *file)
 	return (1);
 }
 
-int			read_param(data_t *player, char *file)
+int			read_param(t_data *player, char *file)
 {
 	int		fd_open;
 	char	*line;
@@ -79,11 +79,11 @@ int			read_param(data_t *player, char *file)
 	return (1);
 }
 
-data_t		*init_player(char *argv[], int argc, int num_sprites, int lifes)
+t_data		*init_player(char *argv[], int argc, int num_sprites, int lifes)
 {
-	data_t  *player;
+	t_data  *player;
 
-	if (!(player = (data_t*)malloc(sizeof(data_t))))
+	if (!(player = (t_data*)malloc(sizeof(t_data))))
 		return (NULL);
 	player->init_game = 0;
 	player->argc = argc;

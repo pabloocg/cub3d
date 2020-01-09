@@ -6,13 +6,24 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/03 20:13:36 by pablo             #+#    #+#             */
-/*   Updated: 2020/01/02 14:51:17 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/09 19:58:37 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-int		hook_key_press(int key, data_t *player)
+static void	hook_key_press_aux(t_data *player)
+{
+	if ((player->bullet_current -= 1) > 0)
+	{
+		play_shot(player);
+		player->keys.key_space = 1;
+	}
+	else if (player->bullet_current <= 0)
+		player->bullet_current = 0;
+}
+
+int		hook_key_press(int key, t_data *player)
 {
 	int		argc;
 	char	*argv[2];
@@ -33,15 +44,7 @@ int		hook_key_press(int key, data_t *player)
 	if (KEY_ARROW_RIGHT == key && player->init_game == 0)
 		player->keys.key_dir = 1;
 	if (KEY_SPACE == key && player->init_game == 0)
-	{
-		if ((player->bullet_current -= 1) > 0)
-		{
-			play_shot(player);
-			player->keys.key_space = 1;
-		}
-		else if (player->bullet_current <= 0)
-			player->bullet_current = 0;
-	}
+		hook_key_press_aux(player);
 	if (KEY_ENTER == key && player->init_game == 1)
 	{
 		argc = player->argc;
@@ -59,7 +62,7 @@ int		hook_key_press(int key, data_t *player)
 	return (0);
 }
 
-int		hook_key_release(int key, data_t *player)
+int		hook_key_release(int key, t_data *player)
 {
 	if (KEY_A == key)
 		player->keys.key_a = 0;
@@ -78,7 +81,7 @@ int		hook_key_release(int key, data_t *player)
 	return (0);
 }
 
-int     hook_key_close(data_t *player)
+int     hook_key_close(t_data *player)
 {
 	double	rotSpeed;
 	double	moveSpeed;

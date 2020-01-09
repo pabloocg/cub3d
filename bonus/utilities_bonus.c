@@ -6,7 +6,7 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/21 19:28:28 by pcuadrad          #+#    #+#             */
-/*   Updated: 2020/01/03 12:39:38 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/09 19:42:11 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,21 @@ void	ft_exit(int control)
 	exit(EXIT_FAILURE);
 }
 
-int		exit_program(data_t *player)
+int		exit_program(t_data *player)
 {
 	free_all(player);
 	ft_printf("Exiting the program...\n");
 	exit(EXIT_SUCCESS);
 }
 
-void	get_crosshair(data_t *player)
+int		exit_program_bmp(t_data *player)
+{
+	free_all_bmp(player);
+	ft_printf("Exiting the program...\n");
+	exit(EXIT_SUCCESS);
+}
+
+void	get_crosshair(t_data *player)
 {
 	player->keys.x_begin = (player->map.width / 2) - player->map.width / 50;
 	player->keys.x_end = (player->map.width / 2) + player->map.width / 50;
@@ -67,7 +74,7 @@ int		create_color(int r, int g, int b)
 	return (color);
 }
 
-void		game_over(data_t *player)
+void		game_over(t_data *player)
 {
 	int x;
 	int	how_x;
@@ -91,13 +98,11 @@ void		game_over(data_t *player)
 	0, 0);
 	mlx_string_put(player->mlx_ptr, player->mlx_win, player->map.width / 3,
 	player->map.screen_height / 3, create_color(255, 255, 255), "PRESS ESC TO EXIT");
-	mlx_string_put(player->mlx_ptr, player->mlx_win, player->map.width / 3,
-	player->map.screen_height - player->map.screen_height / 3, create_color(255, 255, 255), "PRESS ENTER TO PLAY");
 	mlx_hook(player->mlx_win, 17, 0, &exit_program, player);
 	mlx_hook(player->mlx_win, 2, 0, &hook_key_press, player);
 	mlx_loop(player->mlx_ptr);
 }
-void		control_life(data_t *player)
+void		control_life(t_data *player)
 {
 	if (player->hp_current > player->hp_max)
 		player->hp_current = player->hp_max;
@@ -105,4 +110,14 @@ void		control_life(data_t *player)
 		player->hp_current = 0.;
 	if ((int)player->hp_current == 0)
 		game_over(player);
+}
+
+int		get_color_bmp(unsigned char *image, int x, int y, t_data *player)
+{
+	int	rgb;
+	int	color;
+
+	color = *(int*)(image + (4 * player->map.width * (player->map.screen_height - 1 - y)) + (4 * x));
+	rgb = (color & 0xFF0000) | (color & 0x00FF00) | (color & 0x0000FF);
+	return (rgb);
 }

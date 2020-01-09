@@ -12,7 +12,7 @@
 
 #include "../includes/cub3d_bonus.h"
 
-static	void	get_wall_hit(data_t *player)
+static	void	get_wall_hit(t_data *player)
 {
 	 if (player->ray.side == 1)
         player->ray.wallhit_x = player->posX + ((player->ray.mapY - player->posY + (1 - player->ray.stepY) / 2)
@@ -23,7 +23,7 @@ static	void	get_wall_hit(data_t *player)
 	player->ray.wallhit_x -= floor(player->ray.wallhit_x);
 }
 
-static void	get_distance(data_t *player, int x)
+static void	get_distance(t_data *player, int x)
 {
 
 	if (player->ray.side == 0)
@@ -45,7 +45,7 @@ static void	get_distance(data_t *player, int x)
 	player->map.height - 1 : player->ray.drawEnd;
 }
 
-static void	get_hit(data_t *player)
+static void	get_hit(t_data *player)
 {
 	player->ray.hit = 0;
 	while (player->ray.hit == 0)
@@ -69,7 +69,7 @@ static void	get_hit(data_t *player)
 	}
 }
 
-static void	get_step_side(int x, data_t *player)
+static void	get_step_side(int x, t_data *player)
 {
 	player->ray.cameraX = (2 * x) / (double)player->map.width - 1;
 	player->ray.rayDirX = player->dirX + player->planeX * player->ray.cameraX;
@@ -96,7 +96,23 @@ static void	get_step_side(int x, data_t *player)
 								player->ray.deltaDistY;
 }
 
-void			render(data_t *player)
+void			render_bonus(t_data *player)
+{
+	if (player->ray.seeprite != 0)
+		enemy_attack(player);
+	if (player->init_game == 0)
+	{
+		control_life(player);
+		animate_sprite(player);
+		render_sprite(player);
+		print_map(player);
+		print_hud(player);
+		print_crosshair(player);
+		print_gun(player);
+	}
+}
+
+void			render(t_data *player)
 {
 	int		x;
 
@@ -113,16 +129,5 @@ void			render(data_t *player)
 			get_texture(player));
 		floorcasting(player, x);
 	}
-	if (player->ray.seeprite != 0)
-		enemy_attack(player);
-	if (player->init_game == 0)
-	{
-		control_life(player);
-		animate_sprite(player);
-		render_sprite(player);
-		print_map(player);
-		print_hud(player);
-		print_crosshair(player);
-		print_gun(player);
-	}
+	render_bonus(player);
 }

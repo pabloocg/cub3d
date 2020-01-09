@@ -6,13 +6,13 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/26 12:46:19 by pcuadrad          #+#    #+#             */
-/*   Updated: 2019/12/30 18:58:52 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/09 18:50:42 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-void	create_map(char *line, int x, data_t *player, int *sp_x)
+void	create_map(char *line, int x, t_data *player, int *sp_x)
 {
 	int	i;
 	int	y;
@@ -119,7 +119,7 @@ int		count_line(char *line)
 	return (count);
 }
 
-void	isfirst_or_last_line(char *line, data_t *player)
+void	isfirst_or_last_line(char *line, t_data *player)
 {
 	int		i;
 

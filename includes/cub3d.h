@@ -6,7 +6,7 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/01 17:22:36 by pablo             #+#    #+#             */
-/*   Updated: 2020/01/09 14:49:39 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/09 18:26:23 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,8 @@ typedef struct	s_data
 # define KEY_ARROW_DOWN		125
 # define SCREENSHOT_PATH	"screenshot.bmp"
 # define BYTES_PER_PIXEL	4
-# define INFO_HEADER_SIZE	54
+# define INFO_HEADER_SIZE	40
+# define FILE_HEADER_SIZE	14
 
 int				init_render(t_data *player);
 void			bmp_check(t_data *player, char *argv[]);
@@ -221,6 +222,8 @@ void			get_map(t_data *player, char *line);
 void			get_textures(t_data *player, char *line);
 t_data			*init_player(char *argv[], int argc, int num_sprites);
 void			render(t_data *player);
+int				get_color_bmp(unsigned char *image, int x, int y,
+				t_data *player);
 void			print_column(t_data *player, int end, int coord,
 				t_text texture);
 void			print_sprite(t_data *player);

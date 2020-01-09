@@ -6,13 +6,13 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/16 12:05:26 by pcuadrad          #+#    #+#             */
-/*   Updated: 2019/12/30 19:03:52 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/09 18:51:02 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-int				up_down_player(data_t *player, double moveSpeed, double dirX, double dirY)
+int				up_down_player(t_data *player, double moveSpeed, double dirX, double dirY)
 {
 	if(player->map.tab_map[(int)(player->posX + dirX * 1)][(int)player->posY] == 6)
 	{
@@ -61,7 +61,7 @@ int				up_down_player(data_t *player, double moveSpeed, double dirX, double dirY
 	return (1);
 }
 
-int				left_rigth_player(data_t *player, double moveSpeed, double planeX, double planeY)
+int				left_rigth_player(t_data *player, double moveSpeed, double planeX, double planeY)
 {
 	if(player->map.tab_map[(int)(player->posX + planeX * 1)][(int)player->posY] == 6)
 	{
@@ -110,7 +110,7 @@ int				left_rigth_player(data_t *player, double moveSpeed, double planeX, double
 	return (1);
 }
 
-int				rotate_player(data_t *player,  double rotSpeed)
+int				rotate_player(t_data *player,  double rotSpeed)
 {
 	double oldDirX;
 	double oldPlaneX;
@@ -124,7 +124,7 @@ int				rotate_player(data_t *player,  double rotSpeed)
 	return (1);
 }
 
-static void		init_coordenate(data_t *player, int dirX, int dirY, double planeX, double planeY)
+static void		init_coordenate(t_data *player, int dirX, int dirY, double planeX, double planeY)
 {
 	player->dirX = dirX;
 	player->dirY = dirY;
@@ -132,7 +132,7 @@ static void		init_coordenate(data_t *player, int dirX, int dirY, double planeX, 
 	player->planeY = planeY;
 }
 
-void			get_coordenate(data_t *player, char c)
+void			get_coordenate(t_data *player, char c)
 {
 	if (c == 'N')
 		init_coordenate(player, -1, 0, 0, 0.66);
