@@ -6,13 +6,13 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/26 12:46:19 by pcuadrad          #+#    #+#             */
-/*   Updated: 2019/12/26 14:13:02 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/09 13:51:56 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-void	create_map(char *line, int x, data_t *player, int *sp_x)
+void	create_map(char *line, int x, t_data *player, int *sp_x)
 {
 	int	i;
 	int	y;
@@ -24,17 +24,17 @@ void	create_map(char *line, int x, data_t *player, int *sp_x)
 		if (line[i] == '1' || line[i] == '0')
 			player->map.tab_map[x][y++] = line[i] - '0';
 		else if (line[i] == 'N' || line[i] == 'S' || line[i] == 'W' ||
-            line[i] == 'E')
+			line[i] == 'E')
 		{
-			player->posX = (double)x + 0.5;
-			player->posY = (double)y + 0.5;
+			player->posx = (double)x + 0.5;
+			player->posy = (double)y + 0.5;
 			get_coordenate(player, line[i]);
 			player->map.tab_map[x][y++] = 0;
 		}
 		else if (line[i] == '2')
 		{
-			player->sprite[*sp_x].posX = (double)x + 0.5;
-			player->sprite[*sp_x].posY = (double)y + 0.5;
+			player->sprite[*sp_x].posx = (double)x + 0.5;
+			player->sprite[*sp_x].posy = (double)y + 0.5;
 			player->map.tab_map[x][y++] = 2;
 			*sp_x += 1;
 		}
@@ -75,16 +75,16 @@ int		count_line(char *line)
 	{
 		while (line[i] && line[i] == ' ')
 			i++;
-		if (line[i] == '2' || line[i] == '1' || line[i] == '0'||
+		if (line[i] == '2' || line[i] == '1' || line[i] == '0' ||
 			line[i] == 'N' || line[i] == 'S' || line[i] == 'W' ||
-            line[i] == 'E')
+			line[i] == 'E')
 			count++;
 		i++;
 	}
 	return (count);
 }
 
-void	isfirst_or_last_line(char *line, data_t *player)
+void	isfirst_or_last_line(char *line, t_data *player)
 {
 	int		i;
 
@@ -92,14 +92,14 @@ void	isfirst_or_last_line(char *line, data_t *player)
 	while (line[i])
 	{
 		if (line[i] != '1' && line[i] != ' ')
-        {
-            free(line);
-            free(player->map.tab_map);
-            free_path_textures(player, 1);
-            free(player->sprite);
-            free(player);
+		{
+			free(line);
+			free(player->map.tab_map);
+			free_path_textures(player, 1);
+			free(player->sprite);
+			free(player);
 			ft_exit(2);
-        }
+		}
 		i++;
 	}
 }

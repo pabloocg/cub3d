@@ -6,7 +6,7 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/25 17:54:46 by pcuadrad          #+#    #+#             */
-/*   Updated: 2019/12/31 16:35:12 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/09 10:54:10 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,6 @@ int			main(int argc, char *argv[])
 {
 	if ((argc < 2 || argc > 3) || (!ft_strcmp(argv[1], "-save")))
 		ft_exit(3);
-	init_game(argc, argv, 3);	
+	init_game(argc, argv, 3);
     return (EXIT_SUCCESS);
 }

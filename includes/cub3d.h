@@ -6,7 +6,7 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/01 17:22:36 by pablo             #+#    #+#             */
-/*   Updated: 2020/01/03 12:26:56 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/09 14:49:39 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,223 +21,213 @@
 # include <unistd.h>
 # include <fcntl.h>
 
-typedef struct		map_s
+typedef struct	s_map
 {
-	int		width;
-	int 	height;
-	int		x_max;
-	int		y_max;
-	int		**tab_map;
-}					map_t;
+	int				width;
+	int				height;
+	int				x_max;
+	int				y_max;
+	int				**tab_map;
+}				t_map;
 
-typedef struct		ray_s
+typedef struct	s_ray
 {
-	double	cameraX;
-	double	rayDirX;
-	double	rayDirY;
-	int		mapX;
-	int		mapY;
-	double	sideDistX;
-	double	sideDistY;
-	double	deltaDistX;
-	double	deltaDistY;
-	double	perpWallDist;
-	double	wallhit_x;
-	double	wallhit_y;
-	int		stepX;
-	int		stepY;
-	int		hit;
-	int		side;
-	int		lineHeight;
-	int		drawStart;
-	int		drawEnd;
-	int		color;
-}					ray_t;
+	double			camerax;
+	double			raydirx;
+	double			raydiry;
+	int				mapx;
+	int				mapy;
+	double			sidedistx;
+	double			sidedisty;
+	double			deltadistx;
+	double			deltadisty;
+	double			perpwalldist;
+	double			wallhit_x;
+	double			wallhit_y;
+	int				stepx;
+	int				stepy;
+	int				hit;
+	int				side;
+	int				lineheight;
+	int				drawstart;
+	int				drawend;
+	int				color;
+}				t_ray;
 
-typedef struct		color_s
+typedef struct	s_color
 {
-	int		empty;
-	int		r;
-	int		g;
-	int		b;
-}					color_t;
+	int				empty;
+	int				r;
+	int				g;
+	int				b;
+}				t_color;
 
-typedef struct		image_s
+typedef struct	s_image
 {
-	void	*id;
-	int		*image;
-	int		data;
-	int		w;
-	int		h;
-	int		endian;
-	int		size_line;
-}					image_t;
+	void			*id;
+	int				*image;
+	int				data;
+	int				w;
+	int				h;
+	int				endian;
+	int				size_line;
+}				t_image;
 
-typedef struct		text_c
+typedef struct	s_text
 {
-	char	*path;
-	void	*id;
-	int		*image;
-	int		data;
-	int		w;
-	int		h;
-	int		endian;
-	int		size_line;
-}					text_t;
+	char			*path;
+	void			*id;
+	int				*image;
+	int				data;
+	int				w;
+	int				h;
+	int				endian;
+	int				size_line;
+}				t_text;
 
-typedef struct		keys_s
+typedef struct	s_keys
 {
-	int			key_w;
-	int			key_a;
-	int			key_s;
-	int			key_d;
-	int			key_iz;
-	int			key_dir;
-}					keys_t;
+	int				key_w;
+	int				key_a;
+	int				key_s;
+	int				key_d;
+	int				key_iz;
+	int				key_dir;
+}				t_keys;
 
-typedef struct		textures_s
+typedef struct	s_textures
 {
-	text_t	north_text;
-	text_t	south_text;
-	text_t	east_text;
-	text_t	weast_text;
-	text_t	sprite;
-	color_t	floor_color;
-	color_t	ceilling_color;
-}					textures_t;
+	t_text			north_text;
+	t_text			south_text;
+	t_text			east_text;
+	t_text			weast_text;
+	t_text			sprite;
+	t_color			floor_color;
+	t_color			ceilling_color;
+}				t_textures;
 
-typedef struct		valid_s
+typedef struct	s_valid
 {
-	int			resolution;
-	int			n_text;
-	int			s_text;
-	int			e_text;
-	int			w_text;
-	int			sp_text;
-	int			floor;
-	int			ceilling;
-	int			content_map;
-	int			first_map;
-	int			last_map;
-	int			num_sprites;
-}					valid_t;
+	int				resolution;
+	int				n_text;
+	int				s_text;
+	int				e_text;
+	int				w_text;
+	int				sp_text;
+	int				floor;
+	int				ceilling;
+	int				content_map;
+	int				first_map;
+	int				last_map;
+	int				num_sprites;
+}				t_valid;
 
-typedef struct		sprite_s
+typedef struct	s_sprite
 {
-	double		posX;
-	double		posY;
-}					sprite_t;
+	double			posx;
+	double			posy;
+}				t_sprite;
 
-typedef struct		rays_s
+typedef struct	s_rays
 {
-	int			*spriteOrder;
-	double		*spriteDistance;
-	double		spriteX;
-	double		spriteY;
-	double		invDet;
-	double		transformX;
-	double		transformY;
-	int			spriteScreenX;
-	int			vMoveScreen;
-	int			spriteHeight;
-	int			drawStartY;
-	int			drawEndY;
-	int			spriteWidth;
-	int			drawStartX;
-	int			drawEndX;
-	int			print_y;
-}					rays_t;
+	int				*spriteorder;
+	double			*spritedistance;
+	double			spritex;
+	double			spritey;
+	double			invdet;
+	double			transformx;
+	double			transformy;
+	int				spritescreenx;
+	int				vmovescreen;
+	int				spriteheight;
+	int				drawstarty;
+	int				drawendy;
+	int				spritewidth;
+	int				drawstartx;
+	int				drawendx;
+	int				print_y;
+}				t_rays;
 
-typedef struct		data_s
+typedef struct	s_data
 {
-	void		*mlx_ptr;
-	void		*mlx_win;
-	double		posX;
-	double		posY;
-	double		dirX;
-	double		dirY;
-	double		planeX;
-	double		planeY;
-	int			num_sprites;
-	double		*depth;
-	ray_t		ray;
-	rays_t		ray_sprite;
-	map_t		map;
-	textures_t	textur;
-	image_t		img;
-	keys_t		keys;
-	sprite_t	*sprite;
-}					data_t;
+	void			*mlx_ptr;
+	void			*mlx_win;
+	double			posx;
+	double			posy;
+	double			dirx;
+	double			diry;
+	double			planex;
+	double			planey;
+	int				num_sprites;
+	double			*depth;
+	t_ray			ray;
+	t_rays			ray_sprite;
+	t_map			map;
+	t_textures		textur;
+	t_image			img;
+	t_keys			keys;
+	t_sprite		*sprite;
+}				t_data;
 
+# define UDIV				1
+# define VDIV				1
+# define VMOVE				0.0
+# define KEY_ESC			53
+# define KEY_A				0
+# define KEY_W				13
+# define KEY_S				1
+# define KEY_D				2
+# define KEY_ARROW_LEFT		123
+# define KEY_ARROW_UP		126
+# define KEY_ARROW_RIGHT	124
+# define KEY_ARROW_DOWN		125
+# define SCREENSHOT_PATH	"screenshot.bmp"
+# define BYTES_PER_PIXEL	4
+# define INFO_HEADER_SIZE	54
 
-/*
-For Linux:
-# define KEY_ESC 65307
-# define KEY_A 97
-# define KEY_W 119
-# define KEY_S 115
-# define KEY_D 100
-# define KEY_ARROW_LEFT 65361
-# define KEY_ARROW_UP 65362
-# define KEY_ARROW_RIGHT 65363
-# define KEY_ARROW_DOWN 65364
-*/
-
-// For MAC
-# define uDiv 1
-# define vDiv 1
-# define vMove 0.0
-# define KEY_ESC 53
-# define KEY_A 0
-# define KEY_W 13
-# define KEY_S 1
-# define KEY_D 2
-# define KEY_ARROW_LEFT 123
-# define KEY_ARROW_UP 126
-# define KEY_ARROW_RIGHT 124
-# define KEY_ARROW_DOWN 125
-# define SCREENSHOT_PATH "screenshot.bmp"
-# define BYTES_PER_PIXEL 4
-# define INFO_HEADER_SIZE 54
-
-int		init_render(data_t *player);
-void	bmp_check(data_t *player, char *argv[]);
-double	ft_pow(double num);
-void	render_sprite(data_t *player);
-void	free_all(data_t *player);
-void	free_path_textures(data_t *player, int control);
-void	parse_map(data_t *player, char *line);
-int		isvalid(char *argv[]);
-int		check_map(valid_t *check);
-int		check_resolution(char *line, valid_t *check);
-int		check_textures(char *line, valid_t *check);
-int     check_sprite(char *line, valid_t *check);
-int     check_color(char *line, valid_t *check);
-void	ft_exit(int control);
-int		create_bmp(data_t *player);
-text_t	get_texture(data_t *player);
-int		rotate_player(data_t *player,  double rotSpeed);
-int		up_down_player(data_t *player, double moveSpeed, double dirX, double dirY);
-int		left_rigth_player(data_t *player, double moveSpeed, double planeX, double planeY);
-int		get_next_line(int fd, char **line);
-void	get_resolution(data_t *player, char *line);
-int		check_map_bg(char *line);
-void	create_map(char *line, int x, data_t *player, int *sp_x);
-void	isfirst_or_last_line(char *line, data_t *player);
-int		count_line(char *line);
-void	charge_textures_main(data_t *player);
-void	get_coordenate(data_t *player, char c);
-void	get_sprite(data_t *player, char *line);
-void	get_colors(char *line, color_t *color, char param);
-int		get_map_numbers(int fd_open, data_t *player);
-void	get_map(data_t *player, char *line);
-void	get_textures(data_t *player, char *line);
-data_t	*init_player(char *argv[], int argc, int num_sprites);
-void	render(data_t *player);
-void	print_map(data_t *player);
-void	print_column(data_t *player, int start, int end, int coord, text_t texture);
-int		hook_key_close(data_t *player);
-int		hook_key_press(int key, data_t *player);
-int		hook_key_release(int key, data_t *player);
-int		exit_program(data_t *player);
+int				init_render(t_data *player);
+void			bmp_check(t_data *player, char *argv[]);
+double			ft_pow(double num);
+void			render_sprite(t_data *player);
+void			free_all(t_data *player);
+void			free_path_textures(t_data *player, int control);
+void			parse_map(t_data *player, char *line);
+int				isvalid(char *argv[]);
+int				check_map(t_valid *check);
+int				check_resolution(char *line, t_valid *check);
+int				check_textures(char *line, t_valid *check);
+int				check_sprite(char *line, t_valid *check);
+int				check_color(char *line, t_valid *check);
+void			ft_exit(int control);
+int				create_bmp(t_data *player);
+t_text			get_texture(t_data *player);
+int				rotate_player(t_data *player, double rotspeed);
+int				up_down_player(t_data *player, double movespeed, double dirx,
+				double diry);
+int				left_rigth_player(t_data *player, double movespeed,
+				double planex, double planey);
+int				get_next_line(int fd, char **line);
+void			get_resolution(t_data *player, char *line);
+int				check_map_bg(char *line);
+void			create_map(char *line, int x, t_data *player, int *sp_x);
+void			isfirst_or_last_line(char *line, t_data *player);
+int				count_line(char *line);
+void			charge_textures_main(t_data *player);
+void			get_coordenate(t_data *player, char c);
+void			get_sprite(t_data *player, char *line);
+void			get_colors(char *line, t_color *color, char param);
+int				get_map_numbers(int fd_open, t_data *player);
+void			get_map(t_data *player, char *line);
+void			get_textures(t_data *player, char *line);
+t_data			*init_player(char *argv[], int argc, int num_sprites);
+void			render(t_data *player);
+void			print_column(t_data *player, int end, int coord,
+				t_text texture);
+void			print_sprite(t_data *player);
+int				get_pixel(t_text *image, double y, double x);
+int				get_distance_sprites(t_data *player);
+int				hook_key_close(t_data *player);
+int				hook_key_press(int key, t_data *player);
+int				hook_key_release(int key, t_data *player);
+int				exit_program(t_data *player);
 #endif

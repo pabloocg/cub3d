@@ -6,13 +6,13 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/26 11:58:52 by pcuadrad          #+#    #+#             */
-/*   Updated: 2019/12/26 15:32:29 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/09 14:49:15 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-void	parse_map(data_t *player, char *line)
+void		parse_map(t_data *player, char *line)
 {
 	const char	*cpyline;
 
@@ -32,13 +32,14 @@ void	parse_map(data_t *player, char *line)
 		get_colors((char*)cpyline, &player->textur.ceilling_color, 'C');
 }
 
-int			read_map(data_t *player, char *file)
+int			read_map(t_data *player, char *file)
 {
-	int		fd_open;
-	
+	int			fd_open;
+
 	if (player->map.x_max > 0)
 	{
-		if (!(player->map.tab_map = (int**)malloc(sizeof(int*) * player->map.x_max)))
+		if (!(player->map.tab_map = (int**)malloc(sizeof(int*) *
+			player->map.x_max)))
 			return (0);
 	}
 	else
@@ -50,10 +51,10 @@ int			read_map(data_t *player, char *file)
 	return (1);
 }
 
-int			read_param(data_t *player, char *file)
+int			read_param(t_data *player, char *file)
 {
-	int		fd_open;
-	char	*line;
+	int			fd_open;
+	char		*line;
 
 	if ((fd_open = open(file, O_RDONLY)) < 0)
 	{
@@ -73,14 +74,31 @@ int			read_param(data_t *player, char *file)
 	return (1);
 }
 
-data_t		*init_player(char *argv[], int argc, int num_sprites)
+void			bmp_check(t_data *player, char *argv[])
 {
-	data_t  *player;
+	if (!ft_strcmp(argv[2], "--save"))
+	{
+		if (!(create_bmp(player)))
+		{
+			free_all(player);
+			ft_exit(5);
+		}
+	}
+	else
+	{
+		free_all(player);
+		ft_exit(3);
+	}
+}
 
-	if (!(player = (data_t*)malloc(sizeof(data_t))))
+t_data		*init_player(char *argv[], int argc, int num_sprites)
+{
+	t_data		*player;
+
+	if (!(player = (t_data*)malloc(sizeof(t_data))))
 		return (NULL);
 	player->num_sprites = num_sprites;
-	if (!(player->sprite = malloc(sizeof(sprite_t) * player->num_sprites)))
+	if (!(player->sprite = malloc(sizeof(t_sprite) * player->num_sprites)))
 		return (NULL);
 	if (!(read_param(player, argv[1])))
 		return (NULL);

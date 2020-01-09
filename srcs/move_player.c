@@ -6,60 +6,81 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/16 12:05:26 by pcuadrad          #+#    #+#             */
-/*   Updated: 2019/12/26 18:35:02 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/09 13:34:18 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-int				up_down_player(data_t *player, double moveSpeed, double dirX, double dirY)
+int				up_down_player(t_data *player, double movespeed, double dirx,
+	double diry)
 {
-	if(player->map.tab_map[(int)(player->posX + dirX * 1)][(int)player->posY] == 0)
-		player->posX += dirX * moveSpeed;
-	if(player->map.tab_map[(int)player->posX][(int)(player->posY + dirY * 1)] == 0)
-		player->posY += dirY * moveSpeed;
+	if (player->map.tab_map[(int)(player->posx + dirx * 1)][(int)player->posy]
+		== 0)
+		player->posx += dirx * movespeed;
+	if (player->map.tab_map[(int)player->posx][(int)(player->posy + diry * 1)]
+	== 0)
+		player->posy += diry * movespeed;
 	return (1);
 }
 
-int				left_rigth_player(data_t *player, double moveSpeed, double planeX, double planeY)
+int				left_rigth_player(t_data *player, double movespeed,
+	double planex, double planey)
 {
-	if(player->map.tab_map[(int)(player->posX + planeX * 1)][(int)player->posY] == 0)
-		player->posX += planeX * moveSpeed;
-	if(player->map.tab_map[(int)player->posX][(int)(player->posY + planeY * 1)] == 0)
-		player->posY += planeY * moveSpeed;
+	if (player->map.tab_map[(int)(player->posx + planex * 1)][(int)player->posy]
+		== 0)
+		player->posx += planex * movespeed;
+	if (player->map.tab_map[(int)player->posx][(int)(player->posy + planey * 1)]
+		== 0)
+		player->posy += planey * movespeed;
 	return (1);
 }
 
-int				rotate_player(data_t *player,  double rotSpeed)
+int				rotate_player(t_data *player, double rotspeed)
 {
-	double oldDirX;
-	double oldPlaneX;
+	double olddirx;
+	double oldplanex;
 
-	oldDirX = player->dirX;
-	player->dirX = player->dirX * cos(rotSpeed) - player->dirY * sin(rotSpeed);
-	player->dirY = oldDirX * sin(rotSpeed) + player->dirY * cos(rotSpeed);
-	oldPlaneX = player->planeX;
-	player->planeX = player->planeX * cos(rotSpeed) - player->planeY * sin(rotSpeed);
-	player->planeY = oldPlaneX * sin(rotSpeed) + player->planeY * cos(rotSpeed);
+	olddirx = player->dirx;
+	player->dirx = player->dirx * cos(rotspeed) - player->diry * sin(rotspeed);
+	player->diry = olddirx * sin(rotspeed) + player->diry * cos(rotspeed);
+	oldplanex = player->planex;
+	player->planex = player->planex * cos(rotspeed) - player->planey *
+		sin(rotspeed);
+	player->planey = oldplanex * sin(rotspeed) + player->planey * cos(rotspeed);
 	return (1);
 }
 
-static void		init_coordenate(data_t *player, int dirX, int dirY, double planeX, double planeY)
+static void		init_coordenate(t_data *player, double planex, double planey)
 {
-	player->dirX = dirX;
-	player->dirY = dirY;
-	player->planeX = planeX;
-	player->planeY = planeY;
+	player->planex = planex;
+	player->planey = planey;
 }
 
-void			get_coordenate(data_t *player, char c)
+void			get_coordenate(t_data *player, char c)
 {
 	if (c == 'N')
-		init_coordenate(player, -1, 0, 0, 0.66);
+	{
+		player->dirx = -1;
+		player->diry = 0;
+		init_coordenate(player, 0, 0.66);
+	}
 	else if (c == 'S')
-		init_coordenate(player, 1, 0, 0, -0.66);
+	{
+		player->dirx = 1;
+		player->diry = 0;
+		init_coordenate(player, 0, -0.66);
+	}
 	else if (c == 'W')
-		init_coordenate(player, 0, -1, -0.66, 0);
+	{
+		player->dirx = 0;
+		player->diry = -1;
+		init_coordenate(player, -0.66, 0);
+	}
 	else if (c == 'E')
-		init_coordenate(player, 0, 1, 0.66, 0);
+	{
+		player->dirx = 0;
+		player->diry = 1;
+		init_coordenate(player, 0.66, 0);
+	}
 }

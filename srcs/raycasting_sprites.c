@@ -6,13 +6,14 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/21 17:58:48 by pcuadrad          #+#    #+#             */
-/*   Updated: 2020/01/02 15:09:12 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/09 14:23:32 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-static void	sort_sprites(int *order_sprite, double *distance_sprite, int num_sprites)
+static void	sort_sprites(int *order_sprite, double *distance_sprite,
+			int num_sprites)
 {
 	int		i;
 	int		j;
@@ -35,84 +36,67 @@ static void	sort_sprites(int *order_sprite, double *distance_sprite, int num_spr
 		}
 }
 
-int			get_distance_sprites(data_t *player)
+static void	get_draw(t_data *player)
 {
-	int	i;
-
-	if (!(player->ray_sprite.spriteOrder = (int*)malloc(sizeof(int) * player->num_sprites)))
-		return(0);
-	if (!(player->ray_sprite.spriteDistance = (double*)malloc(sizeof(double) * player->num_sprites)))
-		return(0);
-	i = -1;
-	while (++i < player->num_sprites)
-	{
-		player->ray_sprite.spriteOrder[i] = i;
-		player->ray_sprite.spriteDistance[i] = (ft_pow((player->posX - player->sprite[i].posX)) + ft_pow((player->posY - player->sprite[i].posY)));
-	}
-	return (1);
+	player->ray_sprite.spriteheight = abs((int)(player->map.height /
+		(player->ray_sprite.transformy))) / VDIV;
+	player->ray_sprite.drawstarty = -player->ray_sprite.spriteheight /
+		2 + player->map.height / 2 + player->ray_sprite.vmovescreen;
+	player->ray_sprite.drawstarty = (player->ray_sprite.drawstarty < 0)
+		? -1 : player->ray_sprite.drawstarty - 1;
+	player->ray_sprite.drawendy = player->ray_sprite.spriteheight / 2
+		+ player->map.height / 2 + player->ray_sprite.vmovescreen;
+	player->ray_sprite.drawendy = (player->ray_sprite.drawendy >=
+		player->map.height) ? player->map.height - 1 :
+		player->ray_sprite.drawendy;
+	player->ray_sprite.spritewidth = abs((int)(player->map.width /
+		(player->ray_sprite.transformy))) / UDIV;
+	player->ray_sprite.drawstartx = -player->ray_sprite.spritewidth / 2
+		+ player->ray_sprite.spritescreenx;
+	player->ray_sprite.drawstartx = (player->ray_sprite.drawstartx < 0)
+		? 0 : player->ray_sprite.drawstartx;
+	player->ray_sprite.drawendx = player->ray_sprite.spritewidth / 2 +
+		player->ray_sprite.spritescreenx;
+	player->ray_sprite.drawendx = (player->ray_sprite.drawendx >=
+		player->map.width) ? player->map.width - 1 :
+		player->ray_sprite.drawendx;
 }
 
-static void	get_draw(data_t *player)
+static void	render_sprite_aux(t_data *player)
 {
-	player->ray_sprite.spriteHeight = abs((int)(player->map.height / (player->ray_sprite.transformY))) / vDiv;
-	player->ray_sprite.drawStartY = -player->ray_sprite.spriteHeight / 2 + player->map.height / 2 + player->ray_sprite.vMoveScreen;
-	player->ray_sprite.drawStartY = (player->ray_sprite.drawStartY < 0) ? 0 : player->ray_sprite.drawStartY;
-	player->ray_sprite.drawEndY = player->ray_sprite.spriteHeight / 2 + player->map.height / 2 + player->ray_sprite.vMoveScreen;
-	player->ray_sprite.drawEndY = (player->ray_sprite.drawEndY >= player->map.height) ? player->map.height - 1 : player->ray_sprite.drawEndY;
-	player->ray_sprite.spriteWidth = abs((int)(player->map.width / (player->ray_sprite.transformY))) / uDiv;
-	player->ray_sprite.drawStartX = -player->ray_sprite.spriteWidth / 2 + player->ray_sprite.spriteScreenX;
-	player->ray_sprite.drawStartX = (player->ray_sprite.drawStartX < 0) ? 0 : player->ray_sprite.drawStartX;
-	player->ray_sprite.drawEndX = player->ray_sprite.spriteWidth / 2 + player->ray_sprite.spriteScreenX;
-	player->ray_sprite.drawEndX = (player->ray_sprite.drawEndX >= player->map.width) ? player->map.width - 1 : player->ray_sprite.drawEndX;
+	player->ray_sprite.transformy = player->ray_sprite.invdet *
+	(-player->planey * player->ray_sprite.spritex + player->planex
+	* player->ray_sprite.spritey);
+	player->ray_sprite.spritescreenx = (int)((player->map.width / 2) * (1
+	+ player->ray_sprite.transformx / player->ray_sprite.transformy));
+	player->ray_sprite.vmovescreen = (int)(VMOVE / player->ray_sprite.
+	transformy);
 }
 
-void		print_sprite(data_t *player)
-{
-	int				stripe;
-	int				texX;
-	int				texY;
-	unsigned int	color;
-	int				y;
-
-	stripe = player->ray_sprite.drawStartX - 1;
-	while (++stripe < player->ray_sprite.drawEndX && stripe < player->map.width)
-	{
-		texX = (int)(256 * (((int)(stripe) - (-player->ray_sprite.spriteWidth / 2 + player->ray_sprite.spriteScreenX))) * player->textur.sprite.w / player->ray_sprite.spriteWidth) / 256;
-		if(player->ray_sprite.transformY > 0 && player->ray_sprite.transformY < player->depth[(int)stripe])
-		{
-			y = player->ray_sprite.drawStartY - 1;
-			while (++y < player->ray_sprite.drawEndY && y < player->map.height)
-			{
-				player->ray_sprite.print_y = ((int)(y - player->ray_sprite.vMoveScreen) * 256.) - (player->map.height * 128.) + (player->ray_sprite.spriteHeight * 128.);
-				texY = ((player->ray_sprite.print_y * player->textur.sprite.h) / player->ray_sprite.spriteHeight) / 256.;
-				color = player->textur.sprite.image[(player->textur.sprite.w * texY) + texX];
-				if(color != 0)
-					player->img.image[(y * player->map.width) + stripe] = color;
-			}
-		}
-	}
-}
-
-void		render_sprite(data_t *player)
+void		render_sprite(t_data *player)
 {
 	int		i;
-	
+
 	if (!(get_distance_sprites(player)))
 		exit_program(player);
-	sort_sprites(player->ray_sprite.spriteOrder, player->ray_sprite.spriteDistance, player->num_sprites);
+	sort_sprites(player->ray_sprite.spriteorder,
+		player->ray_sprite.spritedistance, player->num_sprites);
 	i = -1;
 	while (++i < player->num_sprites)
 	{
-		player->ray_sprite.spriteX = player->sprite[player->ray_sprite.spriteOrder[i]].posX - player->posX;
-		player->ray_sprite.spriteY = player->sprite[player->ray_sprite.spriteOrder[i]].posY - player->posY;
-		player->ray_sprite.invDet = 1. / ((player->planeX * player->dirY) - (player->dirX * player->planeY));
-		player->ray_sprite.transformX = player->ray_sprite.invDet * (player->dirY * player->ray_sprite.spriteX - player->dirX * player->ray_sprite.spriteY);
-		player->ray_sprite.transformY = player->ray_sprite.invDet * (-player->planeY * player->ray_sprite.spriteX + player->planeX * player->ray_sprite.spriteY);
-		player->ray_sprite.spriteScreenX = (int)((player->map.width / 2) * (1 + player->ray_sprite.transformX / player->ray_sprite.transformY));
-		player->ray_sprite.vMoveScreen = (int)(vMove / player->ray_sprite.transformY);
+		player->ray_sprite.spritex = player->sprite[
+		player->ray_sprite.spriteorder[i]].posx - player->posx;
+		player->ray_sprite.spritey = player->sprite[
+		player->ray_sprite.spriteorder[i]].posy - player->posy;
+		player->ray_sprite.invdet = 1. / ((player->planex * player->diry)
+		- (player->dirx * player->planey));
+		player->ray_sprite.transformx = player->ray_sprite.invdet * (player->
+		diry * player->ray_sprite.spritex - player->dirx * player->ray_sprite.
+		spritey);
+		render_sprite_aux(player);
 		get_draw(player);
 		print_sprite(player);
 	}
-	free(player->ray_sprite.spriteOrder);
-	free(player->ray_sprite.spriteDistance);
+	free(player->ray_sprite.spriteorder);
+	free(player->ray_sprite.spritedistance);
 }

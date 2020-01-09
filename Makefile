@@ -6,7 +6,7 @@
 #    By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/01 17:27:13 by pablo             #+#    #+#              #
-#    Updated: 2020/01/02 14:47:16 by pcuadrad         ###   ########.fr        #
+#    Updated: 2020/01/09 10:37:43 by pcuadrad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,8 +19,6 @@ BONUS_PATH = bonus/
 OBJS_PATH = objs/
 
 INCLUDES_PATH = includes/
-
-MINILIBX_PATH = minilibx/
 
 LIBFT_PATH = srcs/libft
 
@@ -44,18 +42,13 @@ INCLUDE_BONUS = cub3d_bonus.h
 
 NAME = cub3d
 
-LIB_MINILIBX = libmlx.dylib
-
 LIB_LIBFT = libft.a
 
 #--------------------Comandos---------------------------#
 
 GCC = gcc -Wall -Werror -Wextra
-#GCC = gcc
 
-FLAGS = -L ${LIBFT_PATH} -lft -L ${MINILIBX_PATH} -lmlx -framework OpenGL -framework Appkit
-
-#FLAGS = -L ${LIBFT_PATH} -lft -lmlx -framework OpenGL -framework Appkit
+FLAGS = -L ${LIBFT_PATH} -lft -lmlx -framework OpenGL -framework Appkit
 
 CREATEMKDIR = @mkdir -p objs
 
@@ -75,12 +68,10 @@ RM = rm -f
 
 $(NAME):	${OBJS} ${addprefix ${INCLUDES_PATH}, ${INCLUDE}}
 			@make -C ${LIBFT_PATH}
-			@make -C ${MINILIBX_PATH}
 			${GCC} ${addprefix ${OBJS_PATH}, ${notdir ${OBJS}}} ${FLAGS} -o ${NAME}
 
 bonus:		${OBJSBONUS} ${addprefix ${INCLUDES_PATH}, ${INCLUDE_BONUS}}
 			@make -C ${LIBFT_PATH}
-			@make -C ${MINILIBX_PATH}
 			${GCC} ${addprefix ${OBJS_PATH}, ${notdir ${OBJSBONUS}}} ${FLAGS} -o ${NAME}
 
 all:		$(NAME)

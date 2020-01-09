@@ -25,7 +25,7 @@ static	void	get_wall_hit(data_t *player)
 
 static void	get_distance(data_t *player, int x)
 {
-	
+
 	if (player->ray.side == 0)
 		player->ray.perpWallDist = fabs((player->ray.mapX - player->posX +
 			(1 - player->ray.stepX) / 2.) / player->ray.rayDirX);

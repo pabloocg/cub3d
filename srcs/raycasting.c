@@ -1,100 +1,101 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   playering.c                                       :+:      :+:    :+:   */
+/*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
+/*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/12/03 20:24:56 by pablo             #+#    #+#             */
-/*   Updated: 2019/12/06 14:38:32 by pablo            ###   ########.fr       */
+/*   Created: 2020/01/09 13:14:18 by pcuadrad          #+#    #+#             */
+/*   Updated: 2020/01/09 13:14:56 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-static	void	get_wall_hit(data_t *player)
+static	void	get_wall_hit(t_data *player)
 {
 	if (player->ray.side == 1)
-        player->ray.wallhit_x = player->posX + ((player->ray.mapY - player->posY + (1 - player->ray.stepY) / 2)
-            / player->ray.rayDirY) * player->ray.rayDirX;
-    else
-        player->ray.wallhit_x = player->posY + ((player->ray.mapX - player->posX + (1 - player->ray.stepX) / 2)
-            / player->ray.rayDirX) * player->ray.rayDirY;
+		player->ray.wallhit_x = player->posx + ((player->ray.mapy - player->posy
+		+ (1 - player->ray.stepy) / 2) / player->ray.raydiry) *
+		player->ray.raydirx;
+	else
+		player->ray.wallhit_x = player->posy + ((player->ray.mapx - player->posx
+		+ (1 - player->ray.stepx) / 2) / player->ray.raydirx) *
+		player->ray.raydiry;
 	player->ray.wallhit_x -= floor(player->ray.wallhit_x);
 }
 
-static void	get_distance(data_t *player, int x)
+static void		get_distance(t_data *player, int x)
 {
-	
 	if (player->ray.side == 0)
-		player->ray.perpWallDist = fabs((player->ray.mapX - player->posX +
-			(1 - player->ray.stepX) / 2.) / player->ray.rayDirX);
+		player->ray.perpwalldist = fabs((player->ray.mapx - player->posx +
+			(1 - player->ray.stepx) / 2.) / player->ray.raydirx);
 	else
-		player->ray.perpWallDist = fabs((player->ray.mapY - player->posY +
-			(1 - player->ray.stepY) / 2.) / player->ray.rayDirY);
-	player->depth[x] = fabs(player->ray.perpWallDist);
-	player->ray.lineHeight = (int)(player->map.height /
-	player->ray.perpWallDist);
-	player->ray.drawStart = (-player->ray.lineHeight / 2) +
+		player->ray.perpwalldist = fabs((player->ray.mapy - player->posy +
+			(1 - player->ray.stepy) / 2.) / player->ray.raydiry);
+	player->depth[x] = fabs(player->ray.perpwalldist);
+	player->ray.lineheight = (int)(player->map.height /
+	player->ray.perpwalldist);
+	player->ray.drawstart = (-player->ray.lineheight / 2) +
 	(player->map.height / 2);
-	player->ray.drawStart = (player->ray.drawStart < 0) ?
-	0 : player->ray.drawStart;
-	player->ray.drawEnd = (player->ray.lineHeight / 2) +
+	player->ray.drawstart = (player->ray.drawstart < 0) ?
+	0 : player->ray.drawstart;
+	player->ray.drawend = (player->ray.lineheight / 2) +
 		(player->map.height / 2);
-	player->ray.drawEnd = (player->ray.drawEnd >= player->map.height) ?
-	player->map.height - 1 : player->ray.drawEnd;
+	player->ray.drawend = (player->ray.drawend >= player->map.height) ?
+	player->map.height - 1 : player->ray.drawend;
 }
 
-static void	get_hit(data_t *player)
+static void		get_hit(t_data *player)
 {
 	player->ray.hit = 0;
 	while (player->ray.hit == 0)
 	{
-		if (player->ray.sideDistX < player->ray.sideDistY)
+		if (player->ray.sidedistx < player->ray.sidedisty)
 		{
-			player->ray.sideDistX += player->ray.deltaDistX;
-			player->ray.mapX += player->ray.stepX;
+			player->ray.sidedistx += player->ray.deltadistx;
+			player->ray.mapx += player->ray.stepx;
 			player->ray.side = 0;
 		}
 		else
 		{
-			player->ray.sideDistY += player->ray.deltaDistY;
-			player->ray.mapY += player->ray.stepY;
+			player->ray.sidedisty += player->ray.deltadisty;
+			player->ray.mapy += player->ray.stepy;
 			player->ray.side = 1;
 		}
-		if (player->map.tab_map[player->ray.mapX][player->ray.mapY] == 1)
+		if (player->map.tab_map[player->ray.mapx][player->ray.mapy] == 1)
 			player->ray.hit = 1;
 	}
 }
 
-static void	get_step_side(int x, data_t *player)
+static void		get_step_side(int x, t_data *player)
 {
-	player->ray.cameraX = (2 * x) / (double)player->map.width - 1;
-	player->ray.rayDirX = player->dirX + player->planeX * player->ray.cameraX;
-	player->ray.rayDirY = player->dirY + player->planeY * player->ray.cameraX;
-	player->ray.mapX = (int)player->posX;
-	player->ray.mapY = (int)player->posY;
-	player->ray.deltaDistX = sqrt(1 + ((ft_pow(player->ray.rayDirY)) /
-		(ft_pow(player->ray.rayDirX))));
-	player->ray.deltaDistY = sqrt(1 + ((ft_pow(player->ray.rayDirX)) /
-		(ft_pow(player->ray.rayDirY))));
-	player->ray.stepX = (player->ray.rayDirX < 0) ? -1 : 1;
-	if (player->ray.rayDirX < 0)
-		player->ray.sideDistX = (player->posX - player->ray.mapX) *
-								player->ray.deltaDistX;
+	player->ray.camerax = (2 * x) / (double)player->map.width - 1;
+	player->ray.raydirx = player->dirx + player->planex * player->ray.camerax;
+	player->ray.raydiry = player->diry + player->planey * player->ray.camerax;
+	player->ray.mapx = (int)player->posx;
+	player->ray.mapy = (int)player->posy;
+	player->ray.deltadistx = sqrt(1 + ((ft_pow(player->ray.raydiry)) /
+		(ft_pow(player->ray.raydirx))));
+	player->ray.deltadisty = sqrt(1 + ((ft_pow(player->ray.raydirx)) /
+		(ft_pow(player->ray.raydiry))));
+	player->ray.stepx = (player->ray.raydirx < 0) ? -1 : 1;
+	if (player->ray.raydirx < 0)
+		player->ray.sidedistx = (player->posx - player->ray.mapx) *
+								player->ray.deltadistx;
 	else
-		player->ray.sideDistX = (player->ray.mapX + 1.0 - player->posX) *
-								player->ray.deltaDistX;
-	player->ray.stepY = (player->ray.rayDirY < 0) ? -1 : 1;
-	if (player->ray.rayDirY < 0)
-		player->ray.sideDistY = (player->posY - player->ray.mapY) *
-								player->ray.deltaDistY;
+		player->ray.sidedistx = (player->ray.mapx + 1.0 - player->posx) *
+								player->ray.deltadistx;
+	player->ray.stepy = (player->ray.raydiry < 0) ? -1 : 1;
+	if (player->ray.raydiry < 0)
+		player->ray.sidedisty = (player->posy - player->ray.mapy) *
+								player->ray.deltadisty;
 	else
-		player->ray.sideDistY = (player->ray.mapY + 1.0 - player->posY) *
-								player->ray.deltaDistY;
+		player->ray.sidedisty = (player->ray.mapy + 1.0 - player->posy) *
+								player->ray.deltadisty;
 }
 
-void			render(data_t *player)
+void			render(t_data *player)
 {
 	int		x;
 
@@ -106,7 +107,7 @@ void			render(data_t *player)
 		get_hit(player);
 		get_distance(player, x);
 		get_wall_hit(player);
-		print_column(player, player->ray.drawStart, player->ray.drawEnd, x,
+		print_column(player, player->ray.drawend, x,
 			get_texture(player));
 	}
 	render_sprite(player);

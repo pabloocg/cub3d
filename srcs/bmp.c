@@ -6,7 +6,7 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/16 12:37:22 by pcuadrad          #+#    #+#             */
-/*   Updated: 2020/01/03 12:55:42 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/09 14:49:18 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,40 +56,22 @@ unsigned char	*create_bitmap_file_info(int height, int width)
 	return (file_info);
 }
 
-void			write_rgb(data_t *player, int height, int width, int fd)
+void			write_rgb(t_data *player, int height, int width, int fd)
 {
-	int				x;
-	int				y;
-	//unsigned char	color[3];
-	//int				tmp;
+	int						x;
+	int						y;
 
-	y = height;
-	while (y >= 0)
-	{
-		x = 0;
-		while (x < width)
-		{
-			/*
-			tmp = player->img.image[(y * width) + x];
-			color[0] = tmp % 256;
-			tmp /= 256;
-			color[1] = tmp % 256;
-			tmp /= 256;
-			color[2] = tmp % 256;
-			write(fd, &color, sizeof(color));
-			*/
+	y = height + 1;
+	while ((--y >= 0) && (x = -1))
+		while (++x < width)
 			ft_putnbr_fd(player->img.image[(y * player->map.width) + x], fd);
-			x++;
-		}
-		y--;
-	}
 }
 
-void			generate_bitmap_image(data_t *player, int height, int width)
+void			generate_bitmap_image(t_data *player, int height, int width)
 {
-	int				fd;
-	unsigned char	*file_header;
-	unsigned char	*file_info;
+	int						fd;
+	unsigned char			*file_header;
+	unsigned char			*file_info;
 
 	file_header = create_bitmap_file_header(height, width);
 	file_info = create_bitmap_file_info(height, width);
@@ -101,16 +83,18 @@ void			generate_bitmap_image(data_t *player, int height, int width)
 	close(fd);
 }
 
-int				create_bmp(data_t *player)
+int				create_bmp(t_data *player)
 {
-	int height;
-	int width;
+	int						height;
+	int						width;
 
 	height = player->map.height - 1;
 	width = player->map.width;
-	if (!(player->img.id = mlx_new_image(player->mlx_ptr, player->map.width, player->map.height)))
+	if (!(player->img.id = mlx_new_image(player->mlx_ptr, player->map.width,
+		player->map.height)))
 		return (0);
-	player->img.image = (int*)mlx_get_data_addr(player->img.id, &player->img.data, &player->img.size_line, &player->img.endian);
+	player->img.image = (int*)mlx_get_data_addr(player->img.id, &player->img.
+		data, &player->img.size_line, &player->img.endian);
 	if (!(player->depth = malloc(sizeof(double) * player->map.width)))
 		return (0);
 	render(player);
@@ -118,21 +102,4 @@ int				create_bmp(data_t *player)
 	ft_printf("Image BMP 'screenshot.bmp' create correctly.\n");
 	exit_program(player);
 	return (1);
-}
-
-void			bmp_check(data_t *player, char *argv[])
-{
-	if (!ft_strcmp(argv[2], "--save"))
-	{
-		if (!(create_bmp(player)))
-		{
-			free_all(player);
-			ft_exit(5);
-		}
-	}
-	else
-	{
-		free_all(player);
-		ft_exit(3);
-	}
 }

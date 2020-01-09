@@ -6,13 +6,13 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/26 12:44:05 by pcuadrad          #+#    #+#             */
-/*   Updated: 2019/12/26 14:13:11 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/09 13:55:35 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-void	get_textures(data_t *player, char *line)
+void	get_textures(t_data *player, char *line)
 {
 	if (ft_strstr((const char*)line, "NO"))
 	{
@@ -40,7 +40,7 @@ void	get_textures(data_t *player, char *line)
 	}
 }
 
-void	get_colors(char *line, color_t *color, char param)
+void	get_colors(char *line, t_color *color, char param)
 {
 	color->empty = 0;
 	while (*line == ' ' || *line == param)
@@ -58,14 +58,14 @@ void	get_colors(char *line, color_t *color, char param)
 	color->b = ft_atoi(line);
 }
 
-void	get_sprite(data_t *player, char *line)
+void	get_sprite(t_data *player, char *line)
 {
 	while (*line == ' ' || *line == 'S')
-			line++;
+		line++;
 	player->textur.sprite.path = ft_strdup(line);
 }
 
-void	get_resolution(data_t *player, char *line)
+void	get_resolution(t_data *player, char *line)
 {
 	while (*line == ' ' || *line == 'R')
 		line++;
@@ -81,7 +81,7 @@ void	get_resolution(data_t *player, char *line)
 		player->map.height = 1395;
 }
 
-int		get_map_numbers(int fd_open, data_t *player)
+int		get_map_numbers(int fd_open, t_data *player)
 {
 	char	*line;
 	int		x;
@@ -98,10 +98,10 @@ int		get_map_numbers(int fd_open, data_t *player)
 			if (count == 0 || count == player->map.x_max)
 				isfirst_or_last_line(line, player);
 			player->map.y_max = count_line(line);
-			if (!(player->map.tab_map[x] = (int*)malloc(sizeof(int) * player->map.y_max)))
+			if (!(player->map.tab_map[x] = (int*)malloc(sizeof(int) *
+				player->map.y_max)))
 				return (0);
-			create_map(line, x, player, &sp_x);
-			x++;
+			create_map(line, x++, player, &sp_x);
 			count++;
 		}
 		free(line);

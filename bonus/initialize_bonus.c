@@ -6,7 +6,7 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/26 11:58:52 by pcuadrad          #+#    #+#             */
-/*   Updated: 2019/12/31 16:35:35 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/09 11:03:17 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	parse_map(data_t *player, char *line)
 int			read_map(data_t *player, char *file)
 {
 	int		fd_open;
-	
+
 	if (player->map.x_max > 0)
 	{
 		if (!(player->map.tab_map = (int**)malloc(sizeof(int*) * player->map.x_max)))
@@ -96,7 +96,7 @@ data_t		*init_player(char *argv[], int argc, int num_sprites, int lifes)
 	player->bullet_current = player->bullet_max;
 	player->items_current = 0;
 	player->lifes = lifes;
-	if (!(player->sprite = malloc(sizeof(sprite_t) * player->num_sprites)))
+	if (!(player->sprite = (sprite_t*)malloc(sizeof(sprite_t) * player->num_sprites)))
 		return (NULL);
 	if (!(player->textur.sprite = (text_t*)malloc(sizeof(text_t) * 6)))
 		return (NULL);

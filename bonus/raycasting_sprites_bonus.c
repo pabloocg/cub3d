@@ -6,7 +6,7 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/21 17:58:48 by pcuadrad          #+#    #+#             */
-/*   Updated: 2019/12/31 16:53:53 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/09 11:11:32 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void		print_sprite(data_t *player, int i)
 void		render_sprite(data_t *player)
 {
 	int		i;
-	
+
 	if (!(get_distance_sprites(player)))
 		;
 	sort_sprites(player->ray_sprite.spriteOrder, player->ray_sprite.spriteDistance, player->num_sprites);
@@ -114,6 +114,7 @@ void		render_sprite(data_t *player)
 		player->ray_sprite.spriteScreenX = (int)((player->map.width / 2) * (1 + player->ray_sprite.transformX / player->ray_sprite.transformY));
 		player->ray_sprite.vMoveScreen = (int)(vMove / player->ray_sprite.transformY);
 		get_draw(player);
+		ft_printf("Sprite: %d\n", i);
 		print_sprite(player, i);
 	}
 	free(player->ray_sprite.spriteOrder);

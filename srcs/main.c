@@ -6,13 +6,13 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/25 17:54:46 by pcuadrad          #+#    #+#             */
-/*   Updated: 2020/01/03 11:59:40 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/09 11:57:11 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-int			init_render(data_t *player)
+int			init_render(t_data *player)
 {
 	if (!(player->mlx_win = mlx_new_window(player->mlx_ptr, player->map.width,
 		player->map.height, "CUB3D")))
@@ -32,7 +32,7 @@ int			init_render(data_t *player)
 
 int			main(int argc, char *argv[])
 {
-    data_t  *player;
+	t_data	*player;
 	int		num_sprites;
 
 	if ((argc < 2 || argc > 3) || (!ft_strcmp(argv[1], "--save")))
@@ -48,5 +48,5 @@ int			main(int argc, char *argv[])
 	mlx_hook(player->mlx_win, 3, 0, &hook_key_release, player);
 	mlx_loop_hook(player->mlx_ptr, &hook_key_close, player);
 	mlx_loop(player->mlx_ptr);
-    return (EXIT_SUCCESS);
+	return (EXIT_SUCCESS);
 }

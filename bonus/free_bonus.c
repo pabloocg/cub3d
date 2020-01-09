@@ -33,9 +33,9 @@ void	free_all(data_t *player)
 		free_map(player);
 	if (player->depth)
 		free(player->depth);
-	if (player->textur.sprite)
+	//if (player->textur.sprite)
 		free(player->textur.sprite);
-	if (player->sprite)
+	//if (player->sprite)
 		free(player->sprite);
 	mlx_destroy_image(player->mlx_ptr, player->img.id);
 	mlx_destroy_window(player->mlx_ptr, player->mlx_win);

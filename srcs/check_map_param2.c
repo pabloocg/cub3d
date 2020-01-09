@@ -6,13 +6,13 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/25 18:47:24 by pcuadrad          #+#    #+#             */
-/*   Updated: 2019/12/25 19:49:06 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/09 13:48:57 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-int     check_color_aux2(char *cpyline, int i)
+int		check_color_aux2(char *cpyline, int i)
 {
 	int		control;
 
@@ -36,10 +36,10 @@ int     check_color_aux2(char *cpyline, int i)
 	}
 	if (control == 0)
 		return (0);
-	return (1);	
+	return (1);
 }
 
-int     check_color_aux1(char *cpyline, char coord)
+int		check_color_aux1(char *cpyline, char coord)
 {
 	int		i;
 	int		control;
@@ -67,10 +67,10 @@ int     check_color_aux1(char *cpyline, char coord)
 	return (1);
 }
 
-int     check_color(char *line, valid_t *check)
+int		check_color(char *line, t_valid *check)
 {
-	char    *cpyline;
-	int     i;
+	char	*cpyline;
+	int		i;
 
 	cpyline = line;
 	i = 0;
@@ -91,20 +91,20 @@ int     check_color(char *line, valid_t *check)
 	return (0);
 }
 
-int     check_sprite(char *line, valid_t *check)
+int		check_sprite(char *line, t_valid *check)
 {
 	char *cpyline;
 
 	cpyline = line;
 	check->sp_text = 0;
 	while (*cpyline == 'S')
-    {
+	{
 		cpyline++;
-        check->sp_text = 1;
-    }
-    if (check->sp_text == 0)
+		check->sp_text = 1;
+	}
+	if (check->sp_text == 0)
 		return (0);
-    check->sp_text = 0;
+	check->sp_text = 0;
 	while (*cpyline == ' ')
 	{
 		cpyline++;
@@ -117,5 +117,5 @@ int     check_sprite(char *line, valid_t *check)
 		check->sp_text = 1;
 	else
 		return (0);
-    return (1);
+	return (1);
 }
