@@ -6,87 +6,77 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 16:35:30 by pcuadrad          #+#    #+#             */
-/*   Updated: 2020/01/09 18:50:25 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/10 12:55:46 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-static int	get_pixel(text_t *image, int y, int x)
+static void	get_floorxwall(t_data *player)
 {
-	int		pos;
-
-	if (x < 0 || y < 0 || x > image->w || y > image->h)
-		return (0);
-	pos = ((int)(double)((y * image->w) + x));
-	return ((int)image->image[(int)pos]);
-}
-
-static void	get_floorXWall(t_data *player)
-{
-	if(player->ray.side == 0 && player->ray.stepX > 0)
+	if (player->ray.side == 0 && player->ray.stepx > 0)
 	{
-		player->floorceilling.floorXWall = player->ray.mapX;
-		player->floorceilling.floorYWall = player->ray.mapY +
+		player->floorceilling.floorxwall = player->ray.mapx;
+		player->floorceilling.floorywall = player->ray.mapy +
 			player->ray.wallhit_x;
 	}
-	else if(player->ray.side == 0 && player->ray.stepX < 0)
+	else if (player->ray.side == 0 && player->ray.stepx < 0)
 	{
-		player->floorceilling.floorXWall = player->ray.mapX + 1.0;
-		player->floorceilling.floorYWall = player->ray.mapY +
+		player->floorceilling.floorxwall = player->ray.mapx + 1.0;
+		player->floorceilling.floorywall = player->ray.mapy +
 			player->ray.wallhit_x;
 	}
-	else if(player->ray.side == 1 && player->ray.stepY > 0)
+	else if (player->ray.side == 1 && player->ray.stepy > 0)
 	{
-		player->floorceilling.floorXWall = player->ray.mapX +
+		player->floorceilling.floorxwall = player->ray.mapx +
 			player->ray.wallhit_x;
-		player->floorceilling.floorYWall = player->ray.mapY;
+		player->floorceilling.floorywall = player->ray.mapy;
 	}
 	else
 	{
-		player->floorceilling.floorXWall = player->ray.mapX +
+		player->floorceilling.floorxwall = player->ray.mapx +
 			player->ray.wallhit_x;
-		player->floorceilling.floorYWall = player->ray.mapY + 1.0;
+		player->floorceilling.floorywall = player->ray.mapy + 1.0;
 	}
 }
 
 static void	how_xy(t_data *player, int y)
 {
-	player->floorceilling.currentDist = player->map.height /
+	player->floorceilling.currentdist = player->map.height /
 		(2.0 * y - player->map.height);
-	player->floorceilling.weight = (player->floorceilling.currentDist -
-		player->floorceilling.distPlayer) / (player->floorceilling.distWall -
-		player->floorceilling.distPlayer);
-	player->floorceilling.currentFloorX = player->floorceilling.weight *
-		player->floorceilling.floorXWall + (1.0 - player->floorceilling.weight)
-		* player->posX;
-	player->floorceilling.currentFloorY = player->floorceilling.weight *
-		player->floorceilling.floorYWall + (1.0 - player->floorceilling.weight)
-		* player->posY;
-	player->floorceilling.floorTexX = (int)(player->floorceilling.currentFloorX
+	player->floorceilling.weight = (player->floorceilling.currentdist -
+		player->floorceilling.distplayer) / (player->floorceilling.distwall -
+		player->floorceilling.distplayer);
+	player->floorceilling.currentfloorx = player->floorceilling.weight *
+		player->floorceilling.floorxwall + (1.0 - player->floorceilling.weight)
+		* player->posx;
+	player->floorceilling.currentfloory = player->floorceilling.weight *
+		player->floorceilling.floorywall + (1.0 - player->floorceilling.weight)
+		* player->posy;
+	player->floorceilling.floortex = (int)(player->floorceilling.currentfloorx
 		* player->textur.floor.w) % player->textur.floor.w;
-	player->floorceilling.floorTexY = (int)(player->floorceilling.currentFloorY
+	player->floorceilling.floortexy = (int)(player->floorceilling.currentfloory
 		* player->textur.floor.h) % player->textur.floor.h;
 }
 
-void        floorcasting(t_data *player, int coord)
+void		floorcasting(t_data *player, int coord)
 {
-    int     y;
+	int		y;
 
-	get_floorXWall(player);
-	player->floorceilling.distWall = player->ray.perpWallDist;
-	player->floorceilling.distPlayer = 0.0;
-	if (player->ray.drawEnd < 0)
-		player->ray.drawEnd = player->map.height;
-	y = player->ray.drawEnd - 1;
+	get_floorxwall(player);
+	player->floorceilling.distwall = player->ray.perpwalldist;
+	player->floorceilling.distplayer = 0.0;
+	if (player->ray.drawend < 0)
+		player->ray.drawend = player->map.height;
+	y = player->ray.drawend - 1;
 	while (++y < player->map.height)
 	{
 		how_xy(player, y);
 		player->img.image[(y * player->map.width) + coord] =
-			get_pixel(&player->textur.floor, player->floorceilling.floorTexY,
-			player->floorceilling.floorTexX);
-		player->img.image[((player->map.height - y) * player->map.width) + coord] =
-			get_pixel(&player->textur.ceilling, player->floorceilling.floorTexY,
-			player->floorceilling.floorTexX);
+			get_pixel(&player->textur.floor, player->floorceilling.floortexy,
+			player->floorceilling.floortex);
+		player->img.image[((player->map.height - y) * player->map.width) +
+		coord] = get_pixel(&player->textur.ceilling, player->floorceilling.
+		floortexy, player->floorceilling.floortex);
 	}
 }

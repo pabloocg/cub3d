@@ -6,7 +6,7 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/26 11:58:52 by pcuadrad          #+#    #+#             */
-/*   Updated: 2020/01/09 14:49:15 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/10 10:07:48 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int			read_param(t_data *player, char *file)
 	return (1);
 }
 
-void			bmp_check(t_data *player, char *argv[])
+void		bmp_check(t_data *player, char *argv[])
 {
 	if (!ft_strcmp(argv[2], "--save"))
 	{

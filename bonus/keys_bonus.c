@@ -6,7 +6,7 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/03 20:13:36 by pablo             #+#    #+#             */
-/*   Updated: 2020/01/09 19:58:37 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/10 14:13:35 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,25 @@
 static void	hook_key_press_aux(t_data *player)
 {
 	if ((player->bullet_current -= 1) > 0)
-	{
-		play_shot(player);
 		player->keys.key_space = 1;
-	}
 	else if (player->bullet_current <= 0)
 		player->bullet_current = 0;
 }
 
-int		hook_key_press(int key, t_data *player)
+static void	hook_key_press_game_over(t_data *player)
 {
 	int		argc;
 	char	*argv[2];
-	int		lifes;
 
+	argc = player->argc;
+	argv[0] = player->argv[0];
+	argv[1] = player->argv[1];
+	free_all(player);
+	init_game(argc, argv);
+}
+
+int			hook_key_press(int key, t_data *player)
+{
 	if (KEY_ESC == key)
 		exit_program(player);
 	if (KEY_A == key && player->init_game == 0)
@@ -46,23 +51,11 @@ int		hook_key_press(int key, t_data *player)
 	if (KEY_SPACE == key && player->init_game == 0)
 		hook_key_press_aux(player);
 	if (KEY_ENTER == key && player->init_game == 1)
-	{
-		argc = player->argc;
-		argv[0] = player->argv[0];
-		argv[1] = player->argv[1];
-		lifes = player->lifes -= 1;
-		if (lifes > 0)
-		{
-			free_all(player);
-			init_game(argc, argv, lifes);
-		}
-		else
-			exit_program(player);
-	}
+		hook_key_press_game_over(player);
 	return (0);
 }
 
-int		hook_key_release(int key, t_data *player)
+int			hook_key_release(int key, t_data *player)
 {
 	if (KEY_A == key)
 		player->keys.key_a = 0;
@@ -81,25 +74,25 @@ int		hook_key_release(int key, t_data *player)
 	return (0);
 }
 
-int     hook_key_close(t_data *player)
+int			hook_key_close(t_data *player)
 {
-	double	rotSpeed;
-	double	moveSpeed;
+	double	rotspeed;
+	double	movespeed;
 
-	rotSpeed = 0.03;
-	moveSpeed = 0.1;
+	rotspeed = 0.03;
+	movespeed = 0.1;
 	if (player->keys.key_a == 1)
-		left_rigth_player(player, moveSpeed, -player->planeX, -player->planeY);
+		left_rigth_player(player, movespeed, -player->planex, -player->planey);
 	if (player->keys.key_w == 1)
-		up_down_player(player, moveSpeed, player->dirX, player->dirY);
+		up_down_player(player, movespeed, player->dirx, player->diry);
 	if (player->keys.key_s == 1)
-		up_down_player(player, moveSpeed, -player->dirX, -player->dirY);
+		up_down_player(player, movespeed, -player->dirx, -player->diry);
 	if (player->keys.key_d == 1)
-		left_rigth_player(player, moveSpeed, player->planeX, player->planeY);
+		left_rigth_player(player, movespeed, player->planex, player->planey);
 	if (player->keys.key_iz == 1)
-		rotate_player(player, rotSpeed);
+		rotate_player(player, rotspeed);
 	if (player->keys.key_dir == 1)
-		rotate_player(player, -rotSpeed);
+		rotate_player(player, -rotspeed);
 	if (player->keys.key_space == 1)
 		shot(player);
 	render(player);

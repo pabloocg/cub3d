@@ -6,7 +6,7 @@
 #    By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/01 17:27:13 by pablo             #+#    #+#              #
-#    Updated: 2020/01/09 17:22:29 by pcuadrad         ###   ########.fr        #
+#    Updated: 2020/01/10 14:00:05 by pcuadrad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ BONUS_SRCS = main_bonus.c keys_bonus.c print_graph_bonus.c raycasting_bonus.c \
 		check_map_param_bonus.c check_map_param2_bonus.c get_options_bonus.c \
 		get_options_utils_bonus.c charge_textures_bonus.c print_minimap_bonus.c \
 		print_hud_bonus.c shot.c floorceilling.c animate_sprite.c attack.c \
+		fuck_norminnete.c utilities_bonus_2.c fuck_norminnete2.c print_hud2_bonus.c \
 
 INCLUDES = cub3d.h
 
@@ -48,9 +49,9 @@ LIB_LIBFT = libft.a
 
 GCC = gcc -Wall -Werror -Wextra
 
-#FLAGS = -L ${LIBFT_PATH} -lft -lmlx -framework OpenGL -framework Appkit
+FLAGS = -L ${LIBFT_PATH} -lft -lmlx -framework OpenGL -framework Appkit
 
-FLAGS = -L ${LIBFT_PATH} -lft -Lminilibx -lmlx -framework OpenGL -framework Appkit
+#FLAGS = -L ${LIBFT_PATH} -lft -Lminilibx -lmlx -framework OpenGL -framework Appkit
 
 CREATEMKDIR = @mkdir -p objs
 

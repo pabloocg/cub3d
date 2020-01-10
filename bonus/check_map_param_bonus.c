@@ -6,13 +6,13 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/25 18:12:15 by pcuadrad          #+#    #+#             */
-/*   Updated: 2019/12/28 17:36:38 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/10 11:43:21 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-int		check_map(valid_t *check)
+int		check_map(t_valid *check)
 {
 	if (check->resolution == 0 || check->n_text == 0 || check->s_text == 0 ||
 		check->w_text == 0 || check->e_text == 0 || check->sp_text == 0)
@@ -22,7 +22,7 @@ int		check_map(valid_t *check)
 
 int		check_texture_c(char *cpyline, char coord1, char coord2)
 {
-	int 	i;
+	int		i;
 	int		control;
 
 	i = 0;
@@ -44,7 +44,7 @@ int		check_texture_c(char *cpyline, char coord1, char coord2)
 	return (1);
 }
 
-int		check_textures(char *line, valid_t *check)
+int		check_textures(char *line, t_valid *check)
 {
 	if (ft_strchr(line, 'N'))
 	{
@@ -73,7 +73,7 @@ int		check_textures(char *line, valid_t *check)
 	return (1);
 }
 
-int		check_width_heigth(char *cpyline, int i, valid_t *check)
+int		check_width_heigth(char *cpyline, int i, t_valid *check)
 {
 	check->resolution = 0;
 	while (ft_isdigit(cpyline[++i]))
@@ -101,7 +101,7 @@ int		check_width_heigth(char *cpyline, int i, valid_t *check)
 	return ((cpyline[i] == '\0') ? 1 : 0);
 }
 
-int		check_resolution(char *line, valid_t *check)
+int		check_resolution(char *line, t_valid *check)
 {
 	char	*cpyline;
 	int		i;
@@ -122,4 +122,4 @@ int		check_resolution(char *line, valid_t *check)
 	if (!(check_width_heigth(cpyline, i - 1, check)))
 		return (0);
 	return (1);
-}	
+}

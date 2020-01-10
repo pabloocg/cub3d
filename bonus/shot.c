@@ -6,57 +6,21 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 14:19:54 by pcuadrad          #+#    #+#             */
-/*   Updated: 2020/01/09 18:51:39 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/10 14:13:28 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-static int	control_life_enemy(t_data *player, int posX, int posY)
+static void		get_hit_aux(t_data *player)
 {
-	int		i;
-
-	i = -1;
-	while (++i < player->num_sprites)
+	player->ray.hit = 1;
+	if (control_life_enemy(player, (int)player->ray.mapx,
+		(int)player->ray.mapy))
 	{
-		if ((int)player->sprite[i].posX == posX && (int)player->sprite[i].posY == posY)
-		{
-			player->sprite[i].hp -= (rand() % 3) * 10;
-			if (player->sprite[i].hp <= 0)
-				return (1);
-			break ;
-		}
+		change_sprite(player, (int)player->ray.mapx, (int)player->ray.mapy);
+		player->map.tab_map[player->ray.mapx][player->ray.mapy] = 0;
 	}
-	return (0);
-}
-
-void		delete_sprite(t_data *player, int posX, int posY)
-{
-	int			i;
-	sprite_t	temp;
-
-	i = -1;
-	while (++i < player->num_sprites)
-	{
-		if ((int)player->sprite[i].posX == posX && (int)player->sprite[i].posY == posY)
-		{
-			temp = player->sprite[player->num_sprites - 1];
-			player->sprite[player->num_sprites - 1] = player->sprite[i];
-			player->sprite[i] = temp;
-			break ;
-		}
-	}
-	player->num_sprites -= 1;
-}
-
-void		change_sprite(t_data *player, int posX, int posY)
-{
-	int			i;
-
-	i = -1;
-	while (++i < player->num_sprites)
-		if ((int)player->sprite[i].posX == posX && (int)player->sprite[i].posY == posY)
-			player->sprite[i].n_text = 3;
 }
 
 static void		get_hit(t_data *player)
@@ -64,88 +28,60 @@ static void		get_hit(t_data *player)
 	player->ray.hit = 0;
 	while (player->ray.hit == 0)
 	{
-		if (player->ray.sideDistX < player->ray.sideDistY)
+		if (player->ray.sidedistx < player->ray.sidedisty)
 		{
-			player->ray.sideDistX += player->ray.deltaDistX;
-			player->ray.mapX += player->ray.stepX;
+			player->ray.sidedistx += player->ray.deltadistx;
+			player->ray.mapx += player->ray.stepx;
 		}
 		else
 		{
-			player->ray.sideDistY += player->ray.deltaDistY;
-			player->ray.mapY += player->ray.stepY;
+			player->ray.sidedisty += player->ray.deltadisty;
+			player->ray.mapy += player->ray.stepy;
 		}
-		if (player->map.tab_map[player->ray.mapX][player->ray.mapY] == 1)
+		if (player->map.tab_map[player->ray.mapx][player->ray.mapy] == 1)
 			player->ray.hit = 1;
-		else if (player->map.tab_map[player->ray.mapX][player->ray.mapY] == 3)
-		{
-			player->ray.hit = 1;
-			if (control_life_enemy(player, (int)player->ray.mapX, (int)player->ray.mapY))
-			{
-				change_sprite(player, (int)player->ray.mapX, (int)player->ray.mapY);
-				player->map.tab_map[player->ray.mapX][player->ray.mapY] = 0;
-			}
-		}
+		else if (player->map.tab_map[player->ray.mapx][player->ray.mapy] == 3)
+			get_hit_aux(player);
 	}
 }
 
 static void		get_step_side(int x, t_data *player)
 {
-	player->ray.cameraX = (2 * x) / (double)player->map.width - 1;
-	player->ray.rayDirX = player->dirX + player->planeX * player->ray.cameraX;
-	player->ray.rayDirY = player->dirY + player->planeY * player->ray.cameraX;
-	player->ray.mapX = (int)player->posX;
-	player->ray.mapY = (int)player->posY;
-	player->ray.deltaDistX = sqrt(1 + ((ft_pow(player->ray.rayDirY)) /
-		(ft_pow(player->ray.rayDirX))));
-	player->ray.deltaDistY = sqrt(1 + ((ft_pow(player->ray.rayDirX)) /
-		(ft_pow(player->ray.rayDirY))));
-	player->ray.stepX = (player->ray.rayDirX < 0) ? -1 : 1;
-	if (player->ray.rayDirX < 0)
-		player->ray.sideDistX = (player->posX - player->ray.mapX) *
-								player->ray.deltaDistX;
+	player->ray.camerax = (2 * x) / (double)player->map.width - 1;
+	player->ray.raydirx = player->dirx + player->planex * player->ray.camerax;
+	player->ray.raydiry = player->diry + player->planey * player->ray.camerax;
+	player->ray.mapx = (int)player->posx;
+	player->ray.mapy = (int)player->posy;
+	player->ray.deltadistx = sqrt(1 + ((ft_pow(player->ray.raydiry)) /
+		(ft_pow(player->ray.raydirx))));
+	player->ray.deltadisty = sqrt(1 + ((ft_pow(player->ray.raydirx)) /
+		(ft_pow(player->ray.raydiry))));
+	player->ray.stepx = (player->ray.raydirx < 0) ? -1 : 1;
+	if (player->ray.raydirx < 0)
+		player->ray.sidedistx = (player->posx - player->ray.mapx) *
+								player->ray.deltadistx;
 	else
-		player->ray.sideDistX = (player->ray.mapX + 1.0 - player->posX) *
-								player->ray.deltaDistX;
-	player->ray.stepY = (player->ray.rayDirY < 0) ? -1 : 1;
-	if (player->ray.rayDirY < 0)
-		player->ray.sideDistY = (player->posY - player->ray.mapY) *
-								player->ray.deltaDistY;
+		player->ray.sidedistx = (player->ray.mapx + 1.0 - player->posx) *
+								player->ray.deltadistx;
+	player->ray.stepy = (player->ray.raydiry < 0) ? -1 : 1;
+	if (player->ray.raydiry < 0)
+		player->ray.sidedisty = (player->posy - player->ray.mapy) *
+								player->ray.deltadisty;
 	else
-		player->ray.sideDistY = (player->ray.mapY + 1.0 - player->posY) *
-								player->ray.deltaDistY;
+		player->ray.sidedisty = (player->ray.mapy + 1.0 - player->posy) *
+								player->ray.deltadisty;
 }
 
-int         shot(t_data *player)
+int				shot(t_data *player)
 {
-    int     x;
+	int		x;
 
-    x = player->keys.x_begin - 1;
+	x = player->keys.x_begin - 1;
 	player->ray.hit = 0;
-    while (++x < player->keys.x_end && player->ray.hit == 0)
-    {
-        get_step_side(x, player);
-        get_hit(player);
-    }
-    return (1);
-}
-
-void	play_shot(t_data *player)
-{
-	pid_t		x;
-
-	x = fork();
-	if (x < 0)
+	while (++x < player->keys.x_end && player->ray.hit == 0)
 	{
-		ft_printf("fork failure\n");
-		exit_program(player);
-	}   
-	else if (x == 0)
-	{
-		execlp("mpg123", "mpg123", "-q", "sounds/shot.mp3", 0);
-		if(execlp("mpg123", "mpg123", "-q", "sounds/shot.mp3", 0) == -1)
-		{
-			ft_printf("Command Not Found\n");
-			exit_program(player);
-		}
+		get_step_side(x, player);
+		get_hit(player);
 	}
+	return (1);
 }

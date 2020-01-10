@@ -6,7 +6,7 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/25 17:54:46 by pcuadrad          #+#    #+#             */
-/*   Updated: 2020/01/09 20:00:29 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/10 13:02:56 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,14 @@ int			init_render(t_data *player)
 	return (1);
 }
 
-void		init_game(int argc, char *argv[], int lifes)
+void		init_game(int argc, char *argv[])
 {
-	t_data  *player;
+	t_data	*player;
 	int		num_sprites;
 
 	if ((num_sprites = isvalid(argv)) == -1)
 		ft_exit(5);
-	if (!(player = init_player(argv, argc, num_sprites, lifes)))
+	if (!(player = init_player(argv, argc, num_sprites)))
 		ft_exit(5);
 	if (!(init_render(player)))
 		exit_program(player);
@@ -52,6 +52,6 @@ int			main(int argc, char *argv[])
 {
 	if ((argc < 2 || argc > 3) || (!ft_strcmp(argv[1], "--save")))
 		ft_exit(3);
-	init_game(argc, argv, 6);
-    return (EXIT_SUCCESS);
+	init_game(argc, argv);
+	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/26 12:44:05 by pcuadrad          #+#    #+#             */
-/*   Updated: 2020/01/09 18:50:37 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/10 12:56:45 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,11 +107,10 @@ int		get_map_numbers(int fd_open, t_data *player)
 	char	*line;
 	int		x;
 	int		count;
-	int		sp_x;
 
 	x = 0;
 	count = 0;
-	sp_x = 0;
+	player->map.sp_x = 0;
 	while (get_next_line(fd_open, &line) > 0)
 	{
 		if (check_map_bg(line))
@@ -119,9 +118,10 @@ int		get_map_numbers(int fd_open, t_data *player)
 			if (count == 0 || count == player->map.x_max)
 				isfirst_or_last_line(line, player);
 			player->map.y_max = count_line(line);
-			if (!(player->map.tab_map[x] = (int*)malloc(sizeof(int) * player->map.y_max)))
+			if (!(player->map.tab_map[x] = (int*)malloc(sizeof(int) *
+				player->map.y_max)))
 				return (0);
-			create_map(line, x, player, &sp_x);
+			create_map(line, x, player);
 			x++;
 			count++;
 		}

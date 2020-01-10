@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   free_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/21 16:11:39 by pcuadrad          #+#    #+#             */
-/*   Updated: 2019/12/21 16:11:39 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/10 11:24:48 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,15 @@ void	free_all_bmp(t_data *player)
 		free(player);
 }
 
+void	free_sprites_path(t_data *player)
+{
+	int		i;
+
+	i = -1;
+	while (++i < 6)
+		free(player->textur.sprite[i].path);
+}
+
 void	free_path_textures(t_data *player, int control)
 {
 	if (control == 1)
@@ -65,26 +74,19 @@ void	free_path_textures(t_data *player, int control)
 		free(player->textur.south_text.path);
 		free(player->textur.east_text.path);
 		free(player->textur.weast_text.path);
-		free(player->textur.sprite[0].path);
 	}
 	else if (control == 2)
 	{
 		free(player->textur.south_text.path);
 		free(player->textur.east_text.path);
 		free(player->textur.weast_text.path);
-		free(player->textur.sprite[0].path);
 	}
 	else if (control == 3)
 	{
 		free(player->textur.east_text.path);
 		free(player->textur.weast_text.path);
-		free(player->textur.sprite[0].path);
 	}
 	else if (control == 4)
-	{
 		free(player->textur.weast_text.path);
-		free(player->textur.sprite[0].path);
-	}
-	else if (control == 5)
-		free(player->textur.sprite[0].path);
+	free_sprites_path(player);
 }

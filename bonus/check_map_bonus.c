@@ -6,7 +6,7 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/25 18:04:00 by pcuadrad          #+#    #+#             */
-/*   Updated: 2019/12/30 18:57:31 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/10 10:55:03 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int		check_sprites(char *line)
 	return (count);
 }
 
-int		check_file(char *line, valid_t *check)
+int		check_file(char *line, t_valid *check)
 {
 	if (check_map_bg(line))
 	{
@@ -46,7 +46,7 @@ int		check_file(char *line, valid_t *check)
 	else if (ft_strchr(line, 'R'))
 		return ((check_resolution(line, check) == 1) ? 1 : 0);
 	else if (ft_strchr(line, 'O') || ft_strchr(line, 'E') ||
-        ft_strchr(line, 'W'))
+		ft_strchr(line, 'W'))
 		return ((check_textures(line, check) == 1) ? 1 : 0);
 	else if (ft_strchr(line, 'S'))
 		return ((check_sprite(line, check, 'S') == 1) ? 1 : 0);
@@ -64,7 +64,7 @@ int		check_file(char *line, valid_t *check)
 		return (0);
 }
 
-int		check_main(int fd_open, valid_t *check)
+int		check_main(int fd_open, t_valid *check)
 {
 	char	*line;
 	int		ok;
@@ -83,12 +83,12 @@ int		check_main(int fd_open, valid_t *check)
 int		isvalid(char *argv[])
 {
 	int			fd_open;
-	valid_t		*check;
+	t_valid		*check;
 	int			count_sprites;
 
 	if ((fd_open = open(argv[1], O_RDONLY)) < 0)
 		ft_exit(1);
-	if (!(check = (valid_t *)malloc(sizeof(valid_t))))
+	if (!(check = (t_valid *)malloc(sizeof(t_valid))))
 		return (-1);
 	check->first_map = 0;
 	check->content_map = 0;

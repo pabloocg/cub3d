@@ -6,13 +6,13 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/26 11:58:52 by pcuadrad          #+#    #+#             */
-/*   Updated: 2020/01/09 18:50:47 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/10 13:04:51 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-void	parse_map(t_data *player, char *line)
+void		parse_map(t_data *player, char *line)
 {
 	const char	*cpyline;
 
@@ -42,7 +42,8 @@ int			read_map(t_data *player, char *file)
 
 	if (player->map.x_max > 0)
 	{
-		if (!(player->map.tab_map = (int**)malloc(sizeof(int*) * player->map.x_max)))
+		if (!(player->map.tab_map = (int**)malloc(sizeof(int*) *
+			player->map.x_max)))
 			return (0);
 	}
 	else
@@ -79,12 +80,9 @@ int			read_param(t_data *player, char *file)
 	return (1);
 }
 
-t_data		*init_player(char *argv[], int argc, int num_sprites, int lifes)
+void		init_parameters(t_data *player, int num_sprites, int argc,
+			char *argv[])
 {
-	t_data  *player;
-
-	if (!(player = (t_data*)malloc(sizeof(t_data))))
-		return (NULL);
 	player->init_game = 0;
 	player->argc = argc;
 	player->argv[0] = argv[0];
@@ -95,10 +93,19 @@ t_data		*init_player(char *argv[], int argc, int num_sprites, int lifes)
 	player->bullet_max = 20;
 	player->bullet_current = player->bullet_max;
 	player->items_current = 0;
-	player->lifes = lifes;
-	if (!(player->sprite = (sprite_t*)malloc(sizeof(sprite_t) * player->num_sprites)))
+}
+
+t_data		*init_player(char *argv[], int argc, int num_sprites)
+{
+	t_data *player;
+
+	if (!(player = (t_data*)malloc(sizeof(t_data))))
 		return (NULL);
-	if (!(player->textur.sprite = (text_t*)malloc(sizeof(text_t) * 6)))
+	init_parameters(player, num_sprites, argc, argv);
+	if (!(player->sprite = (t_sprite*)malloc(sizeof(t_sprite) *
+		player->num_sprites)))
+		return (NULL);
+	if (!(player->textur.sprite = (t_text*)malloc(sizeof(t_text) * 6)))
 		return (NULL);
 	if (!(read_param(player, argv[1])))
 		return (NULL);
