@@ -10,8 +10,7 @@
     <a href="https://github.com/pabloocg/cub3d/tree/master/srcs"><strong>Explore the docs »</strong></a>
   </p>
 </p>
-
-<!-- ![](record.gif) -->
+<img src="record.gif" width="500" height="400" />
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
