@@ -6,7 +6,7 @@
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 13:39:50 by pcuadrad          #+#    #+#             */
-/*   Updated: 2020/01/09 14:34:27 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/10 10:32:20 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,8 @@ void						*ft_memchr(const void *str, int c, size_t n);
 int							ft_memcmp(const void *str1, const void *str2,
 							size_t n);
 void						*ft_memcpy(void *dst, const void *src, size_t n);
-void						*ft_memmove(void *dst, const void *src, size_t len);
+void						*ft_memmove(void *dst, const void *src,
+							size_t len);
 void						*ft_memset(void *b, int c, size_t len);
 void						ft_putchar_fd(char c, int fd);
 void						ft_putchar(char c);

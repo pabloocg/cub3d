@@ -1,22 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_map_param.c                                  :+:      :+:    :+:   */
+/*   check_map_param_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/25 18:12:15 by pcuadrad          #+#    #+#             */
-/*   Updated: 2020/01/09 13:50:10 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/10 11:43:21 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../includes/cub3d_bonus.h"
 
 int		check_map(t_valid *check)
 {
 	if (check->resolution == 0 || check->n_text == 0 || check->s_text == 0 ||
-		check->w_text == 0 || check->e_text == 0 || check->ceilling == 0 ||
-		check->floor == 0 || check->sp_text == 0)
+		check->w_text == 0 || check->e_text == 0 || check->sp_text == 0)
 		return (0);
 	return (1);
 }

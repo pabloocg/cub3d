@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_map.c                                        :+:      :+:    :+:   */
+/*   check_map_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/25 18:04:00 by pcuadrad          #+#    #+#             */
-/*   Updated: 2020/01/09 13:19:03 by pcuadrad         ###   ########.fr       */
+/*   Updated: 2020/01/10 10:55:03 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../includes/cub3d_bonus.h"
 
 int		line_empty(char *line)
 {
@@ -30,7 +30,8 @@ int		check_sprites(char *line)
 	i = -1;
 	count = 0;
 	while (line[++i])
-		if (line[i] == '2')
+		if (line[i] == '2' || line[i] == '3' || line[i] == '4' ||
+			line[i] == '5' || line[i] == '6')
 			count++;
 	return (count);
 }
@@ -48,9 +49,15 @@ int		check_file(char *line, t_valid *check)
 		ft_strchr(line, 'W'))
 		return ((check_textures(line, check) == 1) ? 1 : 0);
 	else if (ft_strchr(line, 'S'))
-		return ((check_sprite(line, check) == 1) ? 1 : 0);
-	else if (ft_strchr(line, 'F') || ft_strchr(line, 'C'))
-		return ((check_color(line, check) == 1) ? 1 : 0);
+		return ((check_sprite(line, check, 'S') == 1) ? 1 : 0);
+	else if (ft_strchr(line, 'L'))
+		return ((check_sprite(line, check, 'L') == 1) ? 1 : 0);
+	else if (ft_strchr(line, 'G'))
+		return ((check_sprite(line, check, 'G') == 1) ? 1 : 0);
+	else if (ft_strchr(line, 'F'))
+		return ((check_sprite(line, check, 'F') == 1) ? 1 : 0);
+	else if (ft_strchr(line, 'C'))
+		return ((check_sprite(line, check, 'C') == 1) ? 1 : 0);
 	else if (line_empty(line))
 		return (1);
 	else

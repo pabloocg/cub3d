@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   raycasting.c                                       :+:      :+:    :+:   */
+/*   raycasting_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/09 13:14:18 by pcuadrad          #+#    #+#             */
-/*   Updated: 2020/01/09 13:14:56 by pcuadrad         ###   ########.fr       */
+/*   Created: 2020/01/10 10:47:27 by pcuadrad          #+#    #+#             */
+/*   Updated: 2020/01/10 10:49:39 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../includes/cub3d_bonus.h"
 
 static	void	get_wall_hit(t_data *player)
 {
 	if (player->ray.side == 1)
 		player->ray.wallhit_x = player->posx + ((player->ray.mapy - player->posy
-		+ (1 - player->ray.stepy) / 2) / player->ray.raydiry) *
-		player->ray.raydirx;
+		+ (1 - player->ray.stepy) / 2)
+		/ player->ray.raydiry) * player->ray.raydirx;
 	else
 		player->ray.wallhit_x = player->posy + ((player->ray.mapx - player->posx
-		+ (1 - player->ray.stepx) / 2) / player->ray.raydirx) *
-		player->ray.raydiry;
+		+ (1 - player->ray.stepx) / 2)
+		/ player->ray.raydirx) * player->ray.raydiry;
 	player->ray.wallhit_x -= floor(player->ray.wallhit_x);
 }
 
@@ -33,7 +33,7 @@ static void		get_distance(t_data *player, int x)
 	else
 		player->ray.perpwalldist = fabs((player->ray.mapy - player->posy +
 			(1 - player->ray.stepy) / 2.) / player->ray.raydiry);
-	player->depth[x] = fabs(player->ray.perpwalldist);
+	player->depth[x] = player->ray.perpwalldist;
 	player->ray.lineheight = (int)(player->map.height /
 	player->ray.perpwalldist);
 	player->ray.drawstart = (-player->ray.lineheight / 2) +
@@ -65,6 +65,8 @@ static void		get_hit(t_data *player)
 		}
 		if (player->map.tab_map[player->ray.mapx][player->ray.mapy] == 1)
 			player->ray.hit = 1;
+		else if (player->map.tab_map[player->ray.mapx][player->ray.mapy] == 3)
+			player->ray.seeprite = 2;
 	}
 }
 
@@ -99,7 +101,8 @@ void			render(t_data *player)
 {
 	int		x;
 
-	ft_bzero(player->img.image, player->map.width * player->map.height);
+	ft_bzero(player->img.image, player->map.width * player->map.screen_height);
+	player->ray.seeprite = 0;
 	x = -1;
 	while (++x < player->map.width)
 	{
@@ -107,8 +110,8 @@ void			render(t_data *player)
 		get_hit(player);
 		get_distance(player, x);
 		get_wall_hit(player);
-		print_column(player, player->ray.drawend, x,
-			get_texture(player));
+		print_column(player, player->ray.drawend, x, get_texture(player));
+		floorcasting(player, x);
 	}
-	render_sprite(player);
+	render_bonus(player);
 }

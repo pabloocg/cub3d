@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   free_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pcuadrad <pcuadrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/09 11:58:26 by pcuadrad          #+#    #+#             */
-/*   Updated: 2020/01/09 12:02:20 by pcuadrad         ###   ########.fr       */
+/*   Created: 2019/12/21 16:11:39 by pcuadrad          #+#    #+#             */
+/*   Updated: 2020/01/10 11:24:48 by pcuadrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../includes/cub3d_bonus.h"
 
 void	free_map(t_data *player)
 {
@@ -24,10 +24,7 @@ void	free_map(t_data *player)
 		i++;
 	}
 	if (player->map.tab_map)
-	{
 		free(player->map.tab_map);
-		player->map.tab_map = NULL;
-	}
 }
 
 void	free_all(t_data *player)
@@ -35,37 +32,38 @@ void	free_all(t_data *player)
 	if (player)
 		free_map(player);
 	if (player->depth)
-	{
 		free(player->depth);
-		player->depth = NULL;
-	}
+	if (player->textur.sprite)
+		free(player->textur.sprite);
 	if (player->sprite)
-	{
 		free(player->sprite);
-		player->sprite = NULL;
-	}
+	mlx_destroy_image(player->mlx_ptr, player->img.id);
+	mlx_destroy_window(player->mlx_ptr, player->mlx_win);
 	if (player)
-	{
 		free(player);
-		player = NULL;
-	}
 }
 
-void	free_path_textures_2(t_data *player, int control)
+void	free_all_bmp(t_data *player)
 {
-	if (control == 3)
-	{
-		free(player->textur.east_text.path);
-		free(player->textur.weast_text.path);
-		free(player->textur.sprite.path);
-	}
-	else if (control == 4)
-	{
-		free(player->textur.weast_text.path);
-		free(player->textur.sprite.path);
-	}
-	else if (control == 5)
-		free(player->textur.sprite.path);
+	if (player)
+		free_map(player);
+	if (player->depth)
+		free(player->depth);
+	if (player->textur.sprite)
+		free(player->textur.sprite);
+	if (player->sprite)
+		free(player->sprite);
+	if (player)
+		free(player);
+}
+
+void	free_sprites_path(t_data *player)
+{
+	int		i;
+
+	i = -1;
+	while (++i < 6)
+		free(player->textur.sprite[i].path);
 }
 
 void	free_path_textures(t_data *player, int control)
@@ -76,15 +74,19 @@ void	free_path_textures(t_data *player, int control)
 		free(player->textur.south_text.path);
 		free(player->textur.east_text.path);
 		free(player->textur.weast_text.path);
-		free(player->textur.sprite.path);
 	}
 	else if (control == 2)
 	{
 		free(player->textur.south_text.path);
 		free(player->textur.east_text.path);
 		free(player->textur.weast_text.path);
-		free(player->textur.sprite.path);
 	}
-	else
-		free_path_textures_2(player, control);
+	else if (control == 3)
+	{
+		free(player->textur.east_text.path);
+		free(player->textur.weast_text.path);
+	}
+	else if (control == 4)
+		free(player->textur.weast_text.path);
+	free_sprites_path(player);
 }
