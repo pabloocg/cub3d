@@ -8,9 +8,13 @@
     My first RayCaster with miniLibX
     <br />
     <a href="https://github.com/pabloocg/cub3d/tree/master/srcs"><strong>Explore the docs »</strong></a>
+    <br />
+  
+  
+  <img src="record.gif" width="500" height="400" />
   </p>
 </p>
-<img src="record.gif" width="500" height="400" />
+<br />
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
